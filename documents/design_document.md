@@ -26,7 +26,13 @@ When a learner re-submits an assignment, they will be given a chance to change t
 
 When a code reviewer has successfully completed their review, they will be able to submit their completed review (by adding the URL to a video recording), and then a notification will be sent to the learner. The status will change from `in review` to `completed`.
 
+### Daily Batch Jobs
+- Notify code reviewers for reviews that are sitting stagnant and waiting for review.
+- Notify learners if their rejected assignments are still needing updates.
 
+### Appendix
+
+**Statuses:** pending submission, submitted, in review, needs update, completed 
 
 
 
