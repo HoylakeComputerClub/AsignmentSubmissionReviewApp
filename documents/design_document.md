@@ -2,7 +2,7 @@
 
 ## Requirements
 A learner should be able to login to the application and see a dashboard that outlines the following information:
-- What assignments ad due, and when.
+- What assignments are due, and when.
 - A page to review past assignments (optional).
 - Status of an assignment that is currently under review and if it needs updating.
 - A way to submit (or re-submit) an assignment for review.
