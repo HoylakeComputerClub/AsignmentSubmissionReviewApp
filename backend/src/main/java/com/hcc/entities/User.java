@@ -28,7 +28,7 @@ public class User implements UserDetails {
     // constructors
     public User() { }
 
-    public User(LocalDate cohortStartDate, String username, String password, List<Assignment> assignments) {
+    public User(LocalDate cohortStartDate, String username, String password) {
         this.cohortStartDate = cohortStartDate;
         this.username = username;
         this.password = password;
@@ -98,4 +98,5 @@ public class User implements UserDetails {
     public void setPassword(String password) {
         this.password = password;
     }
+
 }
