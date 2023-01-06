@@ -6,6 +6,7 @@ import com.hcc.repositories.AssignmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -24,5 +25,9 @@ public class AssignmentService {
         assignment.setUser(user);
 
         return assignmentRepository.save(assignment);
+    }
+
+    public Optional<Assignment> findById(Long id) {
+        return assignmentRepository.findById(id);
     }
 }
