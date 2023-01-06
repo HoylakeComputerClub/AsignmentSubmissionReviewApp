@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useLocalState } from '../utils/useLocalStorage';
 
 
@@ -40,7 +41,7 @@ const Dashboard = (props) => {
                 <button onClick={() => createAssignment()}>Submit New Assignment</button>
                 <div>
                     { assignments ? assignments.map((assignment) => {
-                        return <div>Assignment ID: {assignment.id}</div>;
+                        return <div><Link to={`/assignments/${assignment.id}`}>Assignment ID: {assignment.id}</Link></div>;
                     }): <></> }
                 </div>
                 <button id='submit' type='button' onClick={() => {setJwt(""); window.location.href = "login";}} >
