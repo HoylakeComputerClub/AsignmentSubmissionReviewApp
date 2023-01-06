@@ -1,26 +1,24 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import fetcher from '../Services/fetchService';
 import { useLocalState } from '../utils/useLocalStorage';
 
 
 const AssignmentView = (props) => {
     const [jwt, setJwt] = useLocalState("", "jwt");
-    const [assignment, setAssignment] = useState(null);
+    const [assignment, setAssignment] = useState({ "githubUrl": "", "branch": "" });
     const assignmentId = window.location.href.split("/assignments/")[1];
     
     useEffect(() => {
-        axios(`/api/assignments/${assignmentId}`, {
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${jwt}` 
-            },
-            method: "get"
-        }).then(res => {
-            if (res.status === 200) return res.data
-        }).then(assignmentData => {
+        fetcher(`/api/assignments/${assignmentId}`, "get", jwt).then(assignmentData => {
+            if (assignmentData.branch === null) assignmentData.branch = "";
+            if (assignmentData.githubUrl === null) assignmentData.githubUrl = "";
             setAssignment(assignmentData)
         });
     }, [assignmentId])
+
+    function saveAssignment() {
+        fetcher(`/api/assignments/${assignmentId}`, "put", jwt, assignment).then((assignmentData) => {assignmentData.status = "Submitted"; setAssignment(assignmentData)})
+    }
     
 
     return (
@@ -31,9 +29,9 @@ const AssignmentView = (props) => {
             {assignment ? (
                 <>
                     <h2>Status: {assignment.status}</h2>
-                    <h3>Github URL: <input type='url' id='githubUrl' /></h3>
-                    <h3>Branch: <input type='text' id='githubUrl' /></h3>
-                    <button>Submit Assignment</button>
+                    <h3>Github URL: <input type='url' id='githubUrl' onChange={(e) => {setAssignment({...assignment, "githubUrl": e.target.value}); console.log(assignment)}} value={assignment.githubUrl} /></h3>
+                    <h3>Branch: <input type='text' id='branch' onChange={(e) => {setAssignment({...assignment, "branch": e.target.value}); console.log(assignment)}} value={assignment.branch} /></h3>
+                    <button onClick={() => saveAssignment()}>Submit Assignment</button>
                 </>
             ) : (<></>)}
         </div>
