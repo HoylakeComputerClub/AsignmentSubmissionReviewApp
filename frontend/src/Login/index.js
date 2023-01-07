@@ -8,16 +8,32 @@ const Login = (props) => {
     const [password, setPassword] = useState("");
     const [jwt, setJwt] = useLocalState("", "jwt");
     function sendLoginRequest () {
-        console.log("login submit requested!");
-     
-    const reqBody = {"username": username, "password": password};
-    fetcher("api/auth/login", "post", jwt, reqBody).then(([body, headers]) => {
-        setJwt(headers.get("authorization"));
-        window.location.href = "dashboard";
-      })
-      .catch((message) => alert(message));
-
-    }
+        //     console.log("login submit requested!");
+         
+        // const reqBody = {"username": username, "password": password};
+        // fetcher("api/auth/login", "post", jwt, reqBody).then(([body, headers]) => {
+        //     setJwt(headers.get("authorization"));
+        //     window.location.href = "dashboard";
+        //   })
+        //   .catch((message) => alert(message));
+            console.log("login submit requested!");
+         
+         const reqBody = {"username": username, "password": password};
+    
+          fetch("api/auth/login",{"headers": { "Content-Type": "application/json"}, 
+          method: "post", body: JSON.stringify(reqBody)}).then((res) => {
+            if (res.status === 200) {
+                return Promise.all([res, res.headers]);
+            } else {
+                return Promise.reject("Invalid Login Attempt!");
+            }
+        })
+          .then(([body, headers]) => {
+            setJwt(headers.get("authorization"));
+            window.location.href = "dashboard";
+          })
+          .catch((message) => alert(message));
+        }
     return (
         <>
             <div>

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import fetcher from '../Services/fetchService';
 import { useLocalState } from '../utils/useLocalStorage';
 
@@ -32,6 +33,7 @@ const AssignmentView = (props) => {
                     <h3>Github URL: <input type='url' id='githubUrl' onChange={(e) => {setAssignment({...assignment, "githubUrl": e.target.value}); console.log(assignment)}} value={assignment.githubUrl} /></h3>
                     <h3>Branch: <input type='text' id='branch' onChange={(e) => {setAssignment({...assignment, "branch": e.target.value}); console.log(assignment)}} value={assignment.branch} /></h3>
                     <button onClick={() => saveAssignment()}>Submit Assignment</button>
+                    <button><Link to="/dashboard">Back to Dashboard</Link></button>
                 </>
             ) : (<></>)}
         </div>
