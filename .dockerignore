@@ -1,0 +1,4 @@
+.gitignore
+.env
+application.properties
+application-dev.properties
