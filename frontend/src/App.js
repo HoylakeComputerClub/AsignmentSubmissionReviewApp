@@ -1,5 +1,4 @@
 import './App.css';
-import { useEffect } from 'react';
 import { useLocalState } from './utils/useLocalStorage';
 import { Route, Routes } from 'react-router-dom';
 import Dashboard from './Dashboard';
@@ -7,6 +6,7 @@ import HomePage from './HomePage';
 import Login from './Login';
 import PrivateRoute from './PrivateRoute';
 import AssignmentView from './AssignmentView';
+import 'bootstrap/dist/css/bootstrap.min.css';
 function App() {
 
   const [jwt, setJwt] = useLocalState("", "jwt");
