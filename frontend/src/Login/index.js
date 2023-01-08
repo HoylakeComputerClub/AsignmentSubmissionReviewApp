@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLocalState } from '../utils/useLocalStorage';
-import { Button, Container, Form } from 'react-bootstrap';
+import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import "./Login.css";
 
 
@@ -33,19 +33,32 @@ const Login = (props) => {
             <Container>
                 <h1>Login Page!!!</h1>
                 <p>{props.jwt}</p>
-                <Form.Group>
-                    <Form.Group className="formItem">
-                        <Form.Label htmlFor='username'>Username</Form.Label>
-                        <Form.Control type='email' id='username' placeholder='Enter Your Username here...' value={username} onChange={(e) => setUsername(e.target.value)} />
-                    </Form.Group>
-                    <Form.Group className="formItem">
-                        <Form.Label htmlFor='password'>Password</Form.Label>
-                        <Form.Control type='password' id='password' placeholder='Enter Your Password here...' value={password} onChange={(e) => setPassword(e.target.value)} />
-                    </Form.Group>
-                </Form.Group>
-                <Button className="formItem" id='submit' type='button' onClick={() => sendLoginRequest()} >
-                    Login
-                </Button>
+                <Row className='d-flex h-100 justify-content-center align-items-center'>
+                    <Col md='6' lg='8'>
+                        <Form.Group>
+                            <Form.Group className="formItem">
+                                <Form.Label htmlFor='username' classname='fs-4'>Username</Form.Label>
+                                <Form.Control type='email' id='username' placeholder='Enter Your Username here...' value={username} onChange={(e) => setUsername(e.target.value)} />
+                            </Form.Group>
+                            <Form.Group className="formItem">
+                                <Form.Label htmlFor='password'>Password</Form.Label>
+                                <Form.Control type='password' id='password' placeholder='Enter Your Password here...' value={password} onChange={(e) => setPassword(e.target.value)} />
+                            </Form.Group>
+                        </Form.Group>
+                        <Row>
+                            <Col className='mt-2 gap-2 d-flex flex-column flex-md-row justify-content-between'>
+                            <Button className="formItem" id='submit' type='button' onClick={() => sendLoginRequest()} >
+                                    Login
+                            </Button>
+                            <Button className="formItem" variant='secondary' id='submit' type='button' onClick={() => window.location.href = '/'} >
+                                Exit
+                            </Button>
+                            </Col>
+                        </Row>
+                    
+                    
+                    </Col>
+                </Row>
 
             </Container>
         </>
