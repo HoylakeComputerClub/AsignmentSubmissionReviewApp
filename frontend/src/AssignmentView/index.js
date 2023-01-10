@@ -34,7 +34,7 @@ const AssignmentView = (props) => {
                     <h3>Assignment Name: <input type='name' id='name' onChange={(e) => {setAssignment({...assignment, "name": e.target.value}); console.log(assignment)}} value={assignment.name} /></h3>
                     <h3>Github URL: <input type='url' id='githubUrl' onChange={(e) => {setAssignment({...assignment, "githubUrl": e.target.value}); console.log(assignment)}} value={assignment.githubUrl} /></h3>
                     <h3>Branch: <input type='text' id='branch' onChange={(e) => {setAssignment({...assignment, "branch": e.target.value}); console.log(assignment)}} value={assignment.branch} /></h3>
-                    <Button onClick={() => saveAssignment()} className='m-3'>Submit Assignment</Button>
+                    <Button variant='success' onClick={() => {setAssignment({...assignment, status: "ready for review"}); saveAssignment(); window.location.href = '/dashboard'}} className='m-3'>Submit Assignment</Button>
                     <Button variant='secondary' onClick={() => window.location.href = '/dashboard'}>Back to Dashboard</Button>
                 </>
             ) : (<></>)}
