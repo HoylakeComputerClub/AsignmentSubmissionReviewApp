@@ -40,7 +40,7 @@ public class AssignmentController {
     }
 
     @DeleteMapping("{assignmentId}")
-    public ResponseEntity<?> deleteAssignment(@PathVariable Long assignmentId, @RequestBody Assignment assignment, @AuthenticationPrincipal User user) {
+    public ResponseEntity<?> deleteAssignment(@PathVariable Long assignmentId, @AuthenticationPrincipal User user) {
         return assignmentService.delete(assignmentId);
     }
     @PostMapping
