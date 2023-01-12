@@ -12,8 +12,8 @@ public class Assignment {
     @Column(name = "status")
     private String status;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "number")
+    private Integer number;
 
     @Column(name = "github_url")
     private String githubUrl;
@@ -31,8 +31,9 @@ public class Assignment {
     // constructors
     public Assignment() { }
 
-    public Assignment(String status, String githubUrl, String branch, String codeReviewVideoUrl, User user) {
+    public Assignment(String status, Integer number, String githubUrl, String branch, String codeReviewVideoUrl, User user) {
         this.status = status;
+        this.number = number;
         this.githubUrl = githubUrl;
         this.branch = branch;
         this.codeReviewVideoUrl = codeReviewVideoUrl;
@@ -57,12 +58,12 @@ public class Assignment {
         this.status = status;
     }
 
-    public String getName() {
-        return name;
+    public Integer getNumber() {
+        return number;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUmber(Integer number) {
+        this.number = number;
     }
 
     public String getGithubUrl() {

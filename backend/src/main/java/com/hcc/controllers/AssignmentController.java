@@ -1,5 +1,6 @@
 package com.hcc.controllers;
 
+import com.hcc.dto.AssignmentResponseDto;
 import com.hcc.entities.Assignment;
 import com.hcc.entities.User;
 import com.hcc.services.AssignmentService;
@@ -28,10 +29,8 @@ public class AssignmentController {
     @GetMapping("{assignmentId}")
     public ResponseEntity<?> getAssignments(@PathVariable Long assignmentId, @AuthenticationPrincipal User user) {
         Optional<Assignment> assignmentOpt = assignmentService.findById(assignmentId);
-        Assignment brokenAssign = new Assignment();
-        brokenAssign.setStatus("Broken Assignment");
 
-        return ResponseEntity.ok(assignmentOpt.get());
+        return ResponseEntity.ok(new AssignmentResponseDto(assignmentOpt.orElse(new Assignment())));
     }
 
     @PutMapping("{assignmentId}")
@@ -40,6 +39,10 @@ public class AssignmentController {
         return ResponseEntity.ok(updatedAssignment);
     }
 
+    @DeleteMapping("{assignmentId}")
+    public ResponseEntity<?> deleteAssignment(@PathVariable Long assignmentId, @RequestBody Assignment assignment, @AuthenticationPrincipal User user) {
+        return assignmentService.delete(assignmentId);
+    }
     @PostMapping
     public ResponseEntity<?> createAssignment(@AuthenticationPrincipal User user) {
         Assignment newAssignment = assignmentService.save(user);
