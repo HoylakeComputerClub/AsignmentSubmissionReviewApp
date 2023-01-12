@@ -40,7 +40,7 @@ const Dashboard = (props) => {
                     { assignments ? assignments.map((assignment) => {
                         return( <Card style={{ margin: '5px'}} key={assignment.id}>
                                 <Card.Body style={{ display: 'flex', flexDirection: 'column', allignItems: 'center', justifyContent: 'space-between'}}>
-                                    <Card.Title>{assignment.name}</Card.Title>
+                                    <Card.Title>{`Assignment #${assignment.number}`}</Card.Title>
                                     <Card.Subtitle style={{marginTop: '5px', marginBottm: '5px'}} className="mb-2 text-muted"><Badge bg="secondary" size='small'>{assignment.status}</Badge></Card.Subtitle>
                                     <Card.Subtitle>Github</Card.Subtitle>
                                     <Card.Text>
