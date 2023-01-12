@@ -28,11 +28,7 @@ const Dashboard = (props) => {
             method: "delete"
         }
         fetchData.headers.Authorization = `Bearer ${jwt}`
-
-
-        // fetcher(`/api/assignments/${id}`, "delete", jwt).then((res) => console.log(res));
-        fetch(`/api/assignments/${id}`, fetchData).then((res) => console.log(res))
-        .then(() => window.location.href = '/dashboard');
+        fetch(`/api/assignments/${id}`, fetchData).then(() => window.location.href = '/dashboard');
     }
     return (
         <div className='dash'>
