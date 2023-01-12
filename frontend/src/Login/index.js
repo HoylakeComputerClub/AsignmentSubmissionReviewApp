@@ -9,9 +9,7 @@ const Login = (props) => {
     const [password, setPassword] = useState("");
     const [jwt, setJwt] = useLocalState("", "jwt");
     function sendLoginRequest () {
-
-        console.log("login submit requested!");
-     
+    
      const reqBody = {"username": username, "password": password};
 
       fetch("api/auth/login",{"headers": { "Content-Type": "application/json"}, 

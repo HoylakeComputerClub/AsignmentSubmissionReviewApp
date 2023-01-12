@@ -10,12 +10,10 @@ const PrivateRoute = ({ children }) => {
 
     if (jwt) {
         fetcher(`/api/auth/validate?token=${jwt}`, 'get', jwt).then(isValid => {
-            console.log("Somethings wrong in first if");
             setIsValid(isValid);
             setIsLoading(false);
         });
     } else {
-        console.log("somethings wrong in else");
         return <Navigate to='/login' />
     }
 

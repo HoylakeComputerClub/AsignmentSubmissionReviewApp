@@ -20,12 +20,6 @@ function App() {
         <Route path="/" element={<HomePage jwt={jwt} setJwt={setJwt} />} />
 
       </Routes>
-          {/* <header className="App-header">
-        <h1>Assignment Submission Review App</h1>
-        <h2>JWT</h2>
-        <p>{jwt}</p>
-      </header>
-    </div> */}
       </div>
 
 

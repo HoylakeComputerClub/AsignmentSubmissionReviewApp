@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Badge, Button, Col, Dropdown, DropdownButton, Form, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import fetcher from '../Services/fetchService';
@@ -11,14 +11,13 @@ const AssignmentView = (props) => {
     const assignmentId = window.location.href.split("/assignments/")[1];
     const [selectedAssignment, setSelectedAssignment] = useState(null);
     const [assignmentStatuses, setAssignmentStatuses] = useState([]);
+    const previousAssignmentValue = useRef(assignment);
 
     const [assignmentEnums, setAssignmentEnums] = useState([]);
     
     useEffect(() => {
         fetcher(`/api/assignments/${assignmentId}`, "get", jwt).then(assignmentResponse => {
-            console.log(assignmentResponse);
             let assignmentData = assignmentResponse.assignment;
-            //console.log(assignmentData);
             if (assignmentData.branch === null) assignmentData.branch = "";
             if (assignmentData.githubUrl === null) assignmentData.githubUrl = "";
             if (assignmentData.number === null) assignmentData.number = '0';
@@ -34,13 +33,24 @@ const AssignmentView = (props) => {
         setAssignment(newAssignment);
     }
 
+    useEffect(() => {
+        if (previousAssignmentValue.current.status !== assignment.status) {
+           persist();
+        }
+        previousAssignmentValue.current = assignment;
+    }, [assignment])
+
     function saveAssignment() {
         if (assignment.status === assignmentStatuses[0].status) {
-            console.log(assignmentStatuses)
-            updateAssignment("status", assignmentStatuses[1].status).then(() => console.log(`Status: ${assignment.status}`)).then(fetcher(`/api/assignments/${assignmentId}`, "put", jwt, assignment)).then((assignmentData) => {setAssignment(assignmentData)});
+            updateAssignment("status", assignmentStatuses[1].status)
         } else {
-            fetcher(`/api/assignments/${assignmentId}`, "put", jwt, assignment).then((assignmentData) => {setAssignment(assignmentData)})
+            persist();
         }
+           
+    }
+
+    function persist() {
+        fetcher(`/api/assignments/${assignmentId}`, "put", jwt, assignment).then((assignmentData) => {setAssignment(assignmentData)});
     }
 
     return (
@@ -76,13 +86,13 @@ const AssignmentView = (props) => {
                     <Form.Label>
                         Github URL
                     </Form.Label>
-                        <Form.Control type='url' id='githubUrl' onChange={(e) => {setAssignment({...assignment, "githubUrl": e.target.value}); console.log(assignment)}} value={assignment.githubUrl} />
+                        <Form.Control type='url' id='githubUrl' onChange={(e) => {setAssignment({...assignment, "githubUrl": e.target.value});}} value={assignment.githubUrl} />
                     </Col>
                     <Col md='10'>
                     <Form.Label>
                         Branch
                     </Form.Label>
-                    <Form.Control type='text' id='branch' onChange={(e) => {setAssignment({...assignment, "branch": e.target.value}); console.log(assignment)}} value={assignment.branch} />
+                    <Form.Control type='text' id='branch' onChange={(e) => {setAssignment({...assignment, "branch": e.target.value}); }} value={assignment.branch} />
                     </Col>
                     <Col md='10'>
                     <Button variant='success' onClick={() => {saveAssignment()}} className='m-3'>Submit Assignment</Button>
