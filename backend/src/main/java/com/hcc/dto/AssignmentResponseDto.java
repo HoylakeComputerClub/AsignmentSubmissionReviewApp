@@ -9,15 +9,18 @@ import java.util.List;
 
 public class AssignmentResponseDto {
     private Assignment assignment;
-    private List<AssignmentEnumDto> assignmentEnums = new ArrayList<>();
+//    private List<AssignmentEnumDto> assignmentEnums = new ArrayList<>();
+    private AssignmentEnum[] assignmentEnums = AssignmentEnum.values();
 
     public AssignmentResponseDto(Assignment assignment) {
         this.assignment = assignment;
-        Arrays.stream(AssignmentEnum.values())
-                .forEach(assignmentEnum -> {
-                    AssignmentEnumDto assignmentEnumDto = new AssignmentEnumDto(assignmentEnum.getAssignmentName(), assignmentEnum.getAssignmentNumber());
-                    assignmentEnums.add(assignmentEnumDto);
-                });
+
+
+//        Arrays.stream(AssignmentEnum.values())
+//                .forEach(assignmentEnum -> {
+//                    AssignmentEnumDto assignmentEnumDto = new AssignmentEnumDto(assignmentEnum.getAssignmentName(), assignmentEnum.getAssignmentNumber());
+//                    assignmentEnums.add(assignmentEnumDto);
+//                });
     }
 
     public Assignment getAssignment() {
@@ -28,7 +31,11 @@ public class AssignmentResponseDto {
         this.assignment = assignment;
     }
 
-    public List<AssignmentEnumDto> getAssignmentEnums() {
+    public AssignmentEnum[] getAssignmentEnums() {
         return assignmentEnums;
     }
+
+    //    public List<AssignmentEnumDto> getAssignmentEnums() {
+//        return assignmentEnums;
+//    }
 }
