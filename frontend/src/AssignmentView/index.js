@@ -61,7 +61,7 @@ const AssignmentView = (props) => {
                 </h2>
             </Col>
             <Col>
-                <Badge style={{lineHeight: '1.6rem', marginTop: '5px', paddingLeft: '20px', paddingRight: '20px', fontSize: '1rem', fontWeight: '300'}}pill bg='success'>{assignment.status}test</Badge>
+                <Badge style={{lineHeight: '1.6rem', marginTop: '5px', paddingLeft: '20px', paddingRight: '20px', fontSize: '1rem', fontWeight: '300'}}pill bg='success'>{assignment.status}</Badge>
             </Col>
         </Row>
             {assignment ? (

@@ -90,6 +90,10 @@ public class Assignment {
         this.codeReviewVideoUrl = codeReviewVideoUrl;
     }
 
+    public void setNumber(Integer number) {
+        this.number = number;
+    }
+
     public User getUser() {
         return user;
     }
