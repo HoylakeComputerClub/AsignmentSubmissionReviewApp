@@ -7,8 +7,10 @@ import { useLocalState } from '../utils/useLocalStorage';
 
 const AssignmentView = (props) => {
     const [jwt, setJwt] = useLocalState("", "jwt");
-    const [assignment, setAssignment] = useState({ "number": "0", "githubUrl": "", "branch": "" });
+    const [assignment, setAssignment] = useState({ "number": "0", "githubUrl": "", "branch": "", "status": null });
     const assignmentId = window.location.href.split("/assignments/")[1];
+    const [selectedAssignment, setSelectedAssignment] = useState(null);
+    const [assignmentStatuses, setAssignmentStatuses] = useState([]);
 
     const [assignmentEnums, setAssignmentEnums] = useState([]);
     
@@ -22,27 +24,34 @@ const AssignmentView = (props) => {
             if (assignmentData.number === null) assignmentData.number = '0';
             setAssignment(assignmentData)
             setAssignmentEnums(assignmentResponse.assignmentEnums);
+            setAssignmentStatuses(assignmentResponse.assignmentStatusEnums);
         });
-    }, [assignmentId])
+    }, [])
 
-    useEffect(() => {
-        console.log(assignmentEnums);
-    }, [assignmentEnums])
+    function updateAssignment (prop, val) {
+        const newAssignment = {...assignment};
+        newAssignment[prop] = val;
+        setAssignment(newAssignment);
+    }
 
     function saveAssignment() {
-        setAssignment({...assignment, "status": "ready for review"});
-        fetcher(`/api/assignments/${assignmentId}`, "put", jwt, assignment).then((assignmentData) => {setAssignment(assignmentData)})
+        if (assignment.status === assignmentStatuses[0].status) {
+            console.log(assignmentStatuses)
+            updateAssignment("status", assignmentStatuses[1].status).then(() => console.log(`Status: ${assignment.status}`)).then(fetcher(`/api/assignments/${assignmentId}`, "put", jwt, assignment)).then((assignmentData) => {setAssignment(assignmentData)});
+        } else {
+            fetcher(`/api/assignments/${assignmentId}`, "put", jwt, assignment).then((assignmentData) => {setAssignment(assignmentData)})
+        }
     }
 
     return (
         <div><Row className='my-5'>
             <Col>
                 <h2>
-                    Assignment {assignmentId}
+                    {assignment.number ? `Assignment ${assignment.number}` : <></>}
                 </h2>
             </Col>
             <Col>
-                <Badge style={{lineHeight: '1.6rem', marginTop: '5px', paddingLeft: '20px', paddingRight: '20px', fontSize: '1rem', fontWeight: '300'}}pill bg='success'>{assignment.status}</Badge>
+                <Badge style={{lineHeight: '1.6rem', marginTop: '5px', paddingLeft: '20px', paddingRight: '20px', fontSize: '1rem', fontWeight: '300'}}pill bg='success'>{assignment.status}test</Badge>
             </Col>
         </Row>
             {assignment ? (
@@ -52,7 +61,7 @@ const AssignmentView = (props) => {
                     Assignment
                 </Form.Label>
                 
-                <DropdownButton id='assignmentNumber' variant='success' title={`Assignment ${assignment.number}`}>
+                <DropdownButton id='assignmentNumber' variant='success' onSelect={(e) => {updateAssignment("number", e);}} title={assignment.number ? `Assignment ${assignment.number}` : 'Select an Assignment'}>
                     {assignmentEnums.map(assignmentEnum => <Dropdown.Item key={assignmentEnum.assignmentNumber} eventKey={assignmentEnum.assignmentNumber}>{"Assignment " + assignmentEnum.assignmentName}</Dropdown.Item>)}
 
 
@@ -63,12 +72,6 @@ const AssignmentView = (props) => {
                 </Col>
                 </Form.Group>
                 <Form.Group as={Row} className='my-5 justify-content-center'>
-                    <Col md='10'>
-                    <Form.Label>
-                        Assignment Number
-                    </Form.Label>
-                        <Form.Control type='text' id='number' onChange={(e) => {setAssignment({...assignment, "number": e.target.value}); console.log(assignment)}} value={assignment.number} />
-                    </Col>
                     <Col md='10'>
                     <Form.Label>
                         Github URL
@@ -82,7 +85,7 @@ const AssignmentView = (props) => {
                     <Form.Control type='text' id='branch' onChange={(e) => {setAssignment({...assignment, "branch": e.target.value}); console.log(assignment)}} value={assignment.branch} />
                     </Col>
                     <Col md='10'>
-                    <Button variant='success' onClick={() => {setAssignment({...assignment, status: "ready for review"}); saveAssignment();}} className='m-3'>Submit Assignment</Button>
+                    <Button variant='success' onClick={() => {saveAssignment()}} className='m-3'>Submit Assignment</Button>
                     <Button variant='secondary' onClick={() => window.location.href = '/dashboard'} className='m-3'>Back to Dashboard</Button>
                     </Col>
                 </Form.Group>
