@@ -1,5 +1,8 @@
 package com.hcc.enums;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum AssignmentEnum {
     ASSIGNMENT_1(1, "Spring Boot Service"),
     ASSIGNMENT_2(2, "Spring Boot Data JPA"),
