@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Badge, Button, Card } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
 import fetcher from '../Services/fetchService';
 import { useLocalState } from '../utils/useLocalStorage';
+import parseJwt from '../utils/jwtUtils';
 
 
 const Dashboard = (props) => {
@@ -12,22 +12,26 @@ const Dashboard = (props) => {
         fetcher("/api/assignments", "get", jwt).then(assignmentsData => {
         setAssignments(assignmentsData);
        })   
-    }, []);
-
-    function parseJwt (token) {
-        var base64Url = token.split('.')[1];
-        var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
-            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-        }).join(''));
-    
-        return JSON.parse(jsonPayload);
-    }
+    }, [jwt]);
 
     function createAssignment () {
         fetcher("/api/assignments", "post", jwt).then(assignment => {
             window.location.href = `/assignments/${assignment.id}`;
         });
+    }
+
+    function deleteAssignment (id) {
+        const fetchData = {
+            headers: {
+                "Content-Type": "application/json"
+            },
+            method: "delete"
+        }
+        fetchData.headers.Authorization = `Bearer ${jwt}`
+
+
+        // fetcher(`/api/assignments/${id}`, "delete", jwt).then((res) => console.log(res));
+        fetch(`/api/assignments/${id}`, fetchData).then((res) => console.log(res));
     }
     return (
         <div className='dash'>
@@ -50,7 +54,7 @@ const Dashboard = (props) => {
                                         {assignment.branch}
                                     </Card.Text>
                                     <Button style={{margin: '5px', width: "100%"}} onClick={() => window.location.href = `/assignments/${assignment.id}`}>Edit</Button>
-                                    <Button style={{margin: '5px', width: "100%"}} variant='danger' onClick={() => window.location.href = `/assignments/${assignment.id}`}>Delete</Button>
+                                    <Button style={{margin: '5px', width: "100%"}} variant='danger' onClick={() => deleteAssignment(assignment.id)}>Delete</Button>
                                 </Card.Body>
                             </Card>);
                     }): <></> }

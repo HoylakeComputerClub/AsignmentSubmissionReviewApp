@@ -54,9 +54,7 @@ const Login = (props) => {
                                 Exit
                             </Button>
                             </Col>
-                        </Row>
-                    
-                    
+                        </Row> 
                     </Col>
                 </Row>
 
