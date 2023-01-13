@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum AssignmentStatusEnum {
     PENDING_SUBMISSION("Pending Submission", 1),
-    SUBMITTING("Submitted", 2),
+    SUBMITTED("Submitted", 2),
     IN_REVIEW("In Review", 3),
     NEEDS_UPDATE("Needs Update", 4),
     COMPLETED("Completed", 5);

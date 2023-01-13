@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Badge, Button, Card } from 'react-bootstrap';
-import fetcher from '../Services/fetchService';
-import parseJwt from '../utils/jwtUtils';
+import fetcher from '../../Services/fetchService';
+import parseJwt from '../../utils/jwtUtils';
 
 
 const Dashboard = (props) => {

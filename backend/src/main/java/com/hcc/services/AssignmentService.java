@@ -3,6 +3,7 @@ package com.hcc.services;
 import com.hcc.entities.Assignment;
 import com.hcc.entities.User;
 import com.hcc.enums.AssignmentStatusEnum;
+import com.hcc.enums.AuthorityEnum;
 import com.hcc.exceptions.ResourceNotFoundException;
 import com.hcc.repositories.AssignmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,16 @@ public class AssignmentService {
     AssignmentRepository assignmentRepository;
 
     public Set<Assignment> findByUser (User user) {
-        return assignmentRepository.findByUser(user);
+        // load for reviewer
+        boolean hasCodeReviewerRole = user.getAuthorities()
+                .stream()
+                .filter(auth -> AuthorityEnum.ROLE_REVIEWER.name().equals(auth.getAuthority()))
+                .count() > 0;
+        if (hasCodeReviewerRole) {
+            return assignmentRepository.findByCodeReviewer(user);
+        } else {
+            return assignmentRepository.findByUser(user);
+        }
     }
 
     public Assignment save(User user) {
