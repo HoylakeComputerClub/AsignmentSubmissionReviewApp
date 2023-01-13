@@ -29,18 +29,20 @@ public class UserDataLoader implements CommandLineRunner {
     }
 
     private void loadUserData() {
-        if (userRepo.count() == 0) {
+        if (userRepo.count() == 2) {
             PasswordEncoder pwenc = new BCryptPasswordEncoder();
             String pw = pwenc.encode("asdfasdf");
-            User tom2 = new User(LocalDate.now(), "tom", pw);
+            User tom2 = new User(LocalDate.now(), "codereviewer2", pw);
             userRepo.save(tom2);
         }
     }
 
     private void loadAuthorityData() {
-        if (authRepo.count() == 0) {
-            Authority adm = new Authority("ROLE_ADMIN", userRepo.findByUsername("tom").get());
-            authRepo.save(adm);
+        if (authRepo.count() <= 3) {
+//            Authority adm = new Authority("ROLE_ADMIN", userRepo.findByUsername("tom").get());
+//            authRepo.save(adm);
+            Authority reviewer = new Authority("ROLE_REVIEWER", userRepo.findByUsername("codereviewer2").get());
+            authRepo.save(reviewer);
         }
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -81,9 +82,9 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> roles = new ArrayList<>();
-        roles.add(new Authority("ROLE_ADMIN"));
-        return roles;
+//        List<GrantedAuthority> roles = new ArrayList<>(Arrays.asList(authorities));
+
+        return authorities;
     }
 
     public void setAuthorities(List<Authority> authorities) {
