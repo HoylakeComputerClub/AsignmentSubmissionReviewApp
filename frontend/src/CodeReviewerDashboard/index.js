@@ -4,7 +4,7 @@ import fetcher from '../Services/fetchService';
 import parseJwt from '../utils/jwtUtils';
 
 
-const Dashboard = (props) => {
+const CodeReviewerDashboard = (props) => {
     const [assignments, setAssignments] = useState(null);
     useEffect(() => {
         fetcher("/api/assignments", "get", props.jwt).then(assignmentsData => {
@@ -30,7 +30,7 @@ const Dashboard = (props) => {
     }
     return (
         <div className='dash'>
-            <h1>{props.jwt ? parseJwt(props.jwt)["authorities"][0] === "ROLE_ADMIN" ? "Administration " : parseJwt(props.jwt)["authorities"][0] === "ROLE_REVIEWER" ? "Reviewer" : parseJwt(props.jwt)["authorities"][0] === "ROLE_LEARNER" ? "Learner" : <></> : ""} Dashboard!!!</h1>
+            <h1>{props.jwt ? props.roles["authorities"][0] === "ROLE_ADMIN" ? "Administration " : props.roles["authorities"][0] === "ROLE_REVIEWER" ? "Reviewer" : props.roles["authorities"][0] === "ROLE_LEARNER" ? "Learner" : <></> : ""} Dashboard!!!</h1>
             <p>Welcome { props.jwt ? parseJwt(props.jwt)['sub'] : <></> }</p>
             <div style={{margin: "5px"}}>
                 <Button onClick={() => createAssignment()}>Submit New Assignment</Button>
@@ -65,4 +65,4 @@ const Dashboard = (props) => {
     )
 }
 
-export default Dashboard;
+export default CodeReviewerDashboard;
