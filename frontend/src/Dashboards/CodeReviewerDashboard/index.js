@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Badge, Button, Card } from 'react-bootstrap';
-import fetcher from '../Services/fetchService';
-import parseJwt from '../utils/jwtUtils';
+import fetcher from '../../Services/fetchService';
+import parseJwt from '../../utils/jwtUtils';
 
 
 const CodeReviewerDashboard = (props) => {
@@ -30,11 +30,13 @@ const CodeReviewerDashboard = (props) => {
     }
     return (
         <div className='dash'>
-            <h1>{props.jwt ? props.roles["authorities"][0] === "ROLE_ADMIN" ? "Administration " : props.roles["authorities"][0] === "ROLE_REVIEWER" ? "Reviewer" : props.roles["authorities"][0] === "ROLE_LEARNER" ? "Learner" : <></> : ""} Dashboard!!!</h1>
+            <h1>{props.jwt ? parseJwt(props.jwt)["authorities"][0] === "ROLE_ADMIN" ? "Administration " : parseJwt(props.jwt)["authorities"][0] === "ROLE_REVIEWER" ? "Reviewer" : parseJwt(props.jwt)["authorities"][0] === "ROLE_LEARNER" ? "Learner" : <></> : ""} Dashboard!!!</h1>
             <p>Welcome { props.jwt ? parseJwt(props.jwt)['sub'] : <></> }</p>
             <div style={{margin: "5px"}}>
-                <Button onClick={() => createAssignment()}>Submit New Assignment</Button>
-                <div className='d-grid gap-5' style={{gridTemplateColumns: 'repeat(auto-fill, 340px)', marginTop: '15px'}}>
+            <div className='assignment-wrapper in-review'><h2><span>In Review</span></h2></div>
+            <div className='assignment-wrapper submitted'>
+                <h2><span>Sumitted for Review</span></h2>
+            <div className='d-grid gap-5' style={{gridTemplateColumns: 'repeat(auto-fill, 340px)', marginTop: '15px'}}>
                     { assignments ? assignments.map((assignment) => {
                         return( <Card style={{ margin: '5px'}} key={assignment.id}>
                                 <Card.Body style={{ display: 'flex', flexDirection: 'column', allignItems: 'center', justifyContent: 'space-between'}}>
@@ -54,6 +56,9 @@ const CodeReviewerDashboard = (props) => {
                             </Card>);
                     }): <></> }
                 </div>
+            </div>
+            <div className='assignment-wrapper needs-update'><h2><span>Needs Update</span></h2></div>
+                
                 <span id='submit' type='button' onClick={() => {
                     props.setJwt(null);
                     window.location.href = '/'
