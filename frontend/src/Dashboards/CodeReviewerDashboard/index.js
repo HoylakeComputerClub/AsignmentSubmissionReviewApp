@@ -46,6 +46,10 @@ const CodeReviewerDashboard = (props) => {
         fetchData.headers.Authorization = `Bearer ${props.jwt}`
         fetch(`/api/assignments/${id}`, fetchData).then(() => window.location.href = '/dashboard');
     }
+
+    function editReview (assignment) {
+        window.location.href = `/assignments/${assignment.id}`
+    }
     return (
         <div className='dash'>
             <h1>{props.jwt ? parseJwt(props.jwt)["authorities"][0] === "ROLE_ADMIN" ? "Administration " : parseJwt(props.jwt)["authorities"][0] === "ROLE_REVIEWER" ? "Reviewer" : parseJwt(props.jwt)["authorities"][0] === "ROLE_LEARNER" ? "Learner" : <></> : ""} Dashboard!!!</h1>
@@ -67,7 +71,7 @@ const CodeReviewerDashboard = (props) => {
                                     <Card.Text>
                                         {assignment.branch}
                                     </Card.Text>
-                                    <Button style={{margin: '5px', width: "100%"}} onClick={() => claimAssignment(assignment)}>Review Assignment</Button>
+                                    <Button style={{margin: '5px', width: "100%"}} onClick={() => editReview(assignment)}>Review Assignment</Button>
                                     {/* <Button style={{margin: '5px', width: "100%"}} variant='danger' onClick={() => deleteAssignment(assignment.id)}>Flag For Update</Button> */}
                                 </Card.Body>
                             </Card>);
