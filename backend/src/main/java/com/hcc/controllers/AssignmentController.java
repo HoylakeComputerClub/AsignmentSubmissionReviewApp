@@ -3,10 +3,14 @@ package com.hcc.controllers;
 import com.hcc.dto.AssignmentResponseDto;
 import com.hcc.entities.Assignment;
 import com.hcc.entities.User;
+import com.hcc.enums.AuthorityEnum;
 import com.hcc.services.AssignmentService;
+import com.hcc.services.UserService;
+import com.hcc.utils.AuthorityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +23,9 @@ public class AssignmentController {
 
     @Autowired
     AssignmentService assignmentService;
+
+    @Autowired
+    UserService userService;
 
     @GetMapping
     public ResponseEntity<?> getAssignments(@AuthenticationPrincipal User user) {
@@ -35,6 +42,17 @@ public class AssignmentController {
 
     @PutMapping("{assignmentId}")
     public ResponseEntity<?> updateAssignment(@PathVariable Long assignmentId, @RequestBody Assignment assignment, @AuthenticationPrincipal User user) {
+
+        // add the code reviewer to the assignment if it was claimed
+        if (assignment.getCodeReviewer() != null) {
+            User codeReviewer = assignment.getCodeReviewer();
+            codeReviewer = userService.findUserByUsername(codeReviewer.getUsername()).get();
+
+            if (AuthorityUtil.hasRole(AuthorityEnum.ROLE_REVIEWER.name(), codeReviewer)) {
+                assignment.setCodeReviewer(codeReviewer);
+            }
+        }
+
         Assignment updatedAssignment = assignmentService.save(assignment);
         return ResponseEntity.ok(updatedAssignment);
     }
