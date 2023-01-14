@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Badge, Button, Col, Dropdown, DropdownButton, Form, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import fetcher from '../Services/fetchService';
-import { useLocalState } from '../utils/useLocalStorage';
+import fetcher from '../../Services/fetchService';
+import { useLocalState } from '../../utils/useLocalStorage';
 
 
 const AssignmentView = (props) => {
@@ -56,6 +56,7 @@ const AssignmentView = (props) => {
     return (
         <div><Row className='my-5'>
             <Col>
+                <h1>Admin Assignment View</h1>
                 <h2>
                     {assignment.number ? `Assignment ${assignment.number}` : <></>}
                 </h2>
