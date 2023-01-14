@@ -62,7 +62,7 @@ const CodeReviewerDashboard = (props) => {
                         return( <Card style={{ margin: '5px'}} key={assignment.id}>
                                 <Card.Body style={{ display: 'flex', flexDirection: 'column', allignItems: 'center', justifyContent: 'space-between'}}>
                                     <Card.Title>{`Assignment #${assignment.number}`}</Card.Title>
-                                    <Card.Subtitle style={{marginTop: '5px', marginBottm: '5px'}} className="mb-2 text-muted"><Badge bg="secondary" size='small'>{assignment.status}</Badge></Card.Subtitle>
+                                    <Card.Subtitle style={{marginTop: '5px', marginBottm: '5px'}} className="mb-2 text-muted"><Badge bg={assignment.status === "Completed" ? 'success' : assignment.status === "Pending Submission" ? 'danger': assignment.status === "Submitted" ? 'primary' :'secondary'} size='small'>{assignment.status}</Badge></Card.Subtitle>
                                     <Card.Subtitle>Github</Card.Subtitle>
                                     <Card.Text>
                                         {assignment.githubUrl}
@@ -85,7 +85,7 @@ const CodeReviewerDashboard = (props) => {
                         return( <Card style={{ margin: '5px'}} key={assignment.id}>
                                 <Card.Body style={{ display: 'flex', flexDirection: 'column', allignItems: 'center', justifyContent: 'space-between'}}>
                                     <Card.Title>{`Assignment #${assignment.number}`}</Card.Title>
-                                    <Card.Subtitle style={{marginTop: '5px', marginBottm: '5px'}} className="mb-2 text-muted"><Badge bg="secondary" size='small'>{assignment.status}</Badge></Card.Subtitle>
+                                    <Card.Subtitle style={{marginTop: '5px', marginBottm: '5px'}} className="mb-2 text-muted"><Badge bg="primary" size='small'>{assignment.status}</Badge></Card.Subtitle>
                                     <Card.Subtitle>Github</Card.Subtitle>
                                     <Card.Text>
                                         {assignment.githubUrl}
@@ -108,7 +108,7 @@ const CodeReviewerDashboard = (props) => {
                         return( <Card style={{ margin: '5px'}} key={assignment.id}>
                                 <Card.Body style={{ display: 'flex', flexDirection: 'column', allignItems: 'center', justifyContent: 'space-between'}}>
                                     <Card.Title>{`Assignment #${assignment.number}`}</Card.Title>
-                                    <Card.Subtitle style={{marginTop: '5px', marginBottm: '5px'}} className="mb-2 text-muted"><Badge bg="secondary" size='small'>{assignment.status}</Badge></Card.Subtitle>
+                                    <Card.Subtitle style={{marginTop: '5px', marginBottm: '5px'}} className="mb-2 text-muted"><Badge bg="danger" size='small'>{assignment.status}</Badge></Card.Subtitle>
                                     <Card.Subtitle>Github</Card.Subtitle>
                                     <Card.Text>
                                         {assignment.githubUrl}
@@ -117,7 +117,7 @@ const CodeReviewerDashboard = (props) => {
                                     <Card.Text>
                                         {assignment.branch}
                                     </Card.Text>
-                                    {/* <Button style={{margin: '5px', width: "100%"}} onClick={() => claimAssignment(assignment)}>Re Claim</Button> */}
+                                    <Button style={{margin: '5px', width: "100%"}} onClick={() => window.location.href = `/assignments/${assignment.id}`}>View</Button>
                                     {/* <Button style={{margin: '5px', width: "100%"}} variant='danger' onClick={() => deleteAssignment(assignment.id)}>Delete</Button> */}
                                 </Card.Body>
                             </Card>);

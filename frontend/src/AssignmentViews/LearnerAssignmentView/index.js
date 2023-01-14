@@ -62,12 +62,13 @@ const AssignmentView = (props) => {
                 </h2>
             </Col>
             <Col>
-                <Badge style={{lineHeight: '1.6rem', marginTop: '5px', paddingLeft: '20px', paddingRight: '20px', fontSize: '1rem', fontWeight: '300'}}pill bg='success'>{assignment.status}</Badge>
+                <Badge style={{lineHeight: '1.6rem', marginTop: '5px', paddingLeft: '20px', paddingRight: '20px', fontSize: '1rem', fontWeight: '300'}} bg={assignment.status === "Completed" ? 'success' : assignment.status === "Pending Submission" ? 'warning': assignment.status === "Submitted" ? 'primary' :  assignment.status === "Needs Update" ? 'danger' : 'secondary'}>{assignment.status}</Badge>
             </Col>
         </Row>
             {assignment ? (
-                <><Form.Group as={Row} className='my-5 justify-content-center'>
-                <Col md='10'>
+                <>
+                <Form.Group as={Row} className='my-5 justify-content-center'>
+                {/* <Col md='10'>
                 <Form.Label>
                     Assignment
                 </Form.Label>
@@ -94,11 +95,75 @@ const AssignmentView = (props) => {
                         Branch
                     </Form.Label>
                     <Form.Control type='text' id='branch' onChange={(e) => {setAssignment({...assignment, "branch": e.target.value}); }} value={assignment.branch} />
+                    </Col> */}
+                    {assignment.status === "Completed" || assignment.status === "In Review" || assignment.status === "Submitted" ? <>
+
+
+
+                <Col md='10'>
+                    <Form.Label>
+                        Github URL
+                    </Form.Label>
+                        <Form.Control readOnly type='url' id='githubUrl' onChange={(e) => {setAssignment({...assignment, "githubUrl": e.target.value});}} value={assignment.githubUrl} />
                     </Col>
                     <Col md='10'>
-                    <Button variant='success' onClick={() => {saveAssignment()}} className='m-3'>Submit Assignment</Button>
-                    <Button variant='secondary' onClick={() => window.location.href = '/dashboard'} className='m-3'>Back to Dashboard</Button>
+                    <Form.Label>
+                        Branch
+                    </Form.Label>
+                    <Form.Control readOnly type='text' id='branch' onChange={(e) => {setAssignment({...assignment, "branch": e.target.value}); }} value={assignment.branch} />
                     </Col>
+                    {assignment.status === "In Review" || assignment.status === "Submitted" ? <>
+                        <Col md='10'>
+                            {/* <Button variant='success' onClick={() => {window.open(assignment.codeReviewVideoUrl, '_blank'); }} className='m-3'>Watch Review Video</Button> */}
+                            <Button variant='secondary' onClick={() => window.location.href = '/dashboard'} className='m-3'>Back to Dashboard</Button>
+                        </Col>
+                    </> : <>
+                        <Col md='10'>
+                        <Form.Label>Review Video URL</Form.Label>
+                        <Form.Control readOnly type='url' id='githubUrl' onChange={(e) => {setAssignment({...assignment, "githubUrl": e.target.value});}} value={assignment.codeReviewVideoUrl} />
+                        </Col>
+
+                        <Col md='10'>
+                        <Button variant='success' onClick={() => {window.open(assignment.codeReviewVideoUrl, '_blank'); }} className='m-3'>Watch Review Video</Button>
+                        <Button variant='secondary' onClick={() => window.location.href = '/dashboard'} className='m-3'>Back to Dashboard</Button>
+                        </Col>
+                    </> }
+               
+                    </> : <>
+                    <Col md='10'>
+                    <Form.Label>
+                        Github URL
+                    </Form.Label>
+                        <Form.Control type='url' id='githubUrl' onChange={(e) => {setAssignment({...assignment, "githubUrl": e.target.value});}} value={assignment.githubUrl} />
+                    </Col>
+                    <Col md='10'>
+                    <Form.Label>
+                        Branch
+                    </Form.Label>
+                    <Form.Control type='text' id='branch' onChange={(e) => {setAssignment({...assignment, "branch": e.target.value}); }} value={assignment.branch} />
+                    </Col>
+                    <Col md='10'>
+                <Form.Label>
+                    Assignment
+                </Form.Label>
+                
+                <DropdownButton id='assignmentNumber' variant='success' onSelect={(e) => {updateAssignment("number", e);}} title={assignment.number ? `Assignment ${assignment.number}` : 'Select an Assignment'}>
+                    {assignmentEnums.map(assignmentEnum => <Dropdown.Item key={assignmentEnum.assignmentNumber} eventKey={assignmentEnum.assignmentNumber}>{"Assignment " + assignmentEnum.assignmentName}</Dropdown.Item>)}
+
+
+
+                </DropdownButton>
+
+            
+                </Col>
+                    
+
+                        <Col md='10'>
+                        <Button variant='success' onClick={() => {saveAssignment()}} className='m-3'>Submit Assignment</Button>
+                        <Button variant='secondary' onClick={() => window.location.href = '/dashboard'} className='m-3'>Back to Dashboard</Button>
+                        </Col>
+                    
+                    </>}
                 </Form.Group>
                 </> ) : (<></>)}
         </div>
