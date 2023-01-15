@@ -15,6 +15,15 @@ const AssignmentView = (props) => {
     const previousAssignmentValue = useRef(assignment);
 
     const [assignmentEnums, setAssignmentEnums] = useState([]);
+
+    // useEffect(() => {
+    //     console.log(assignmentId);
+    // fetcher(`/api/comments?assignmentId=${assignmentId}`, "get", jwt, null).then((commentData) => {
+    //         console.log(commentData);
+    //         setComments(commentData);
+
+    //     });
+    // }, [])
     
     useEffect(() => {
         fetcher(`/api/assignments/${assignmentId}`, "get", jwt).then(assignmentResponse => {

@@ -17,4 +17,6 @@ public interface AssignmentRepository extends JpaRepository<Assignment, Long> {
             "or a.codeReviewer = :user"
     )
     Set<Assignment> findByCodeReviewer(User user);
+
+    Assignment getByid(Long assignmentId);
 }
