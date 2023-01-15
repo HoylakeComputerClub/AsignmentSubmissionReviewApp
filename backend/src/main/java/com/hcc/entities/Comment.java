@@ -21,6 +21,16 @@ public class Comment {
     @Column(columnDefinition = "TEXT", length = 512)
     private String commentText;
 
+    public Comment() {}
+
+
+    public Comment(LocalDateTime createdDate, Assignment assignment, User createdBy, String commentText) {
+        this.createdDate = createdDate;
+        this.assignment = assignment;
+        this.createdBy = createdBy;
+        this.commentText = commentText;
+    }
+
     public Long getId() {
         return id;
     }
@@ -59,5 +69,16 @@ public class Comment {
 
     public void setAssignment(Assignment assignment) {
         this.assignment = assignment;
+    }
+
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "id=" + id +
+                ", createdDate=" + createdDate +
+                ", assignment=" + assignment +
+                ", createdBy=" + createdBy +
+                ", commentText='" + commentText + '\'' +
+                '}';
     }
 }

@@ -14,8 +14,15 @@ const AssignmentView = (props) => {
     const [selectedAssignment, setSelectedAssignment] = useState(null);
     const [assignmentStatuses, setAssignmentStatuses] = useState([]);
     const previousAssignmentValue = useRef(assignment);
-
+    
     const [assignmentEnums, setAssignmentEnums] = useState([]);
+    const [comment, setComment] = useState({
+        id: 1,
+        commentText: "",
+        assignmentId: assignmentId !== null ? parseInt(assignmentId) : null,
+        user: jwt
+    });
+
     
     useEffect(() => {
         fetcher(`/api/assignments/${assignmentId}`, "get", jwt).then(assignmentResponse => {
@@ -57,6 +64,18 @@ const AssignmentView = (props) => {
         fetcher(`/api/assignments/${assignmentId}`, "put", jwt, assignment).then((assignmentData) => {setAssignment(assignmentData)});
     }
 
+    function submitComment () {
+        console.log(comment);
+        fetcher('/api/comments', 'post', jwt, comment).then( data => {
+            console.log(data);
+        })
+    }
+
+    function updateComment(value) {
+        const commentCopy = {...comment};
+        commentCopy.commentText = value;
+        setComment(commentCopy);
+    }
     return (
         <div><Row className='my-5'>
             <Col>
@@ -205,6 +224,10 @@ const AssignmentView = (props) => {
                     </>}
                 </Form.Group>
                 </> ) : (<></>)}
+                <div className="mt-5">
+                    <textarea onChange={(e) => {updateComment(e.target.value)}} style={{width: '100%', borderRadius: '7px' }}></textarea>
+                    <Button onClick={() => {submitComment()}} style={{width: '100%'}}>Post Comment</Button>
+                </div>
         </div>
     );
 }
