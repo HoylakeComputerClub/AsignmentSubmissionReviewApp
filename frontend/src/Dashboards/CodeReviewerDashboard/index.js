@@ -84,7 +84,7 @@ const CodeReviewerDashboard = (props) => {
             <div className='assignment-wrapper submitted'>
                 <h2><span>Awaiting Review</span></h2>
             <div className='d-grid gap-5' style={{gridTemplateColumns: 'repeat(auto-fill, 340px)', marginTop: '15px'}}>
-                    { assignments && assignments.filter(assignment => assignment.status === "Submitted").length > 0 ? assignments.filter(assignment => assignment.status === "Submitted" || assignment.status === "Resubmitted").sort((a, b) => {
+                    { assignments && ((assignments.filter(assignment => assignment.status === "Submitted").length > 0) ||(assignments.filter(assignment => assignment.status === "Resubmitted").length > 0))  ? assignments.filter(assignment => assignment.status === "Submitted" || assignment.status === "Resubmitted").sort((a, b) => {
                         if (a.status === "Resubmitted")
                             return -1;
                         else
