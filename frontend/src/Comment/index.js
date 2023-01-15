@@ -1,25 +1,47 @@
-import React from 'react';
-
+import React from "react";
+import { useUser } from "../UserProvider";
+import jwt_decode from "jwt-decode";
 const Comment = (props) => {
-    
+  const user = useUser();
+  const decodedJwt = jwt_decode(user.jwt);
 
+  const {
+    id,
+    emitEditComment,
+    createdDate,
+    createdBy,
+    text,
+    emitDeleteComment,
+  } = props;
 
-    return (
-        <div className='mt-3 comment-bubble' style={{padding: '20px', margin: '10px', border: '1px dotted gray', borderRadius: '7px'}}>
-            <div style={{fontWeight: 'bold'}}>
-                {`${props.c.createdBy.username}`}  
-                <span onClick={() => {props.emitUpdateComment(props.c.id)}} style={{cursor: 'pointer', color: 'blue', paddingLeft: '60px'}}>edit</span>
-                <span onClick={() => {props.emitDeleteComment()}} style={{cursor: 'pointer', color: 'red', paddingLeft: '30px'}}>delete</span></div>
-            <div>
-                {props.c.commentText}
-               
+  console.log("decodedJWT", decodedJwt);
+  console.log("createdBy", createdBy);
+  return (
+    <div className="comment-bubble">
+      <div className="d-flex gap-5" style={{ fontWeight: "bold" }}>
+        <div>{`${createdBy.username}`}</div>
+        {decodedJwt.sub === createdBy.username ? (
+          <>
+            <div
+              onClick={() => emitEditComment(id)}
+              style={{ cursor: "pointer", color: "blue" }}
+            >
+              edit
             </div>
-        </div>
-    );
-
-
-
-
-}
+            <div
+              onClick={() => emitDeleteComment(id)}
+              style={{ cursor: "pointer", color: "red" }}
+            >
+              delete
+            </div>
+          </>
+        ) : (
+          <></>
+        )}
+      </div>
+      <div>{text}</div>
+    </div>
+  );
+};
 
 export default Comment;

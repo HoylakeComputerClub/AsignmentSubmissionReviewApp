@@ -17,34 +17,29 @@ import java.util.Set;
 
 @Service
 public class CommentService {
-    @Autowired
-    CommentRepository commentRepository;
 
     @Autowired
-    AssignmentRepository assignmentRepository;
-
-    public Comment createComment(Comment comment) {
-        Comment c = new Comment(LocalDateTime.now(), new Assignment(), new User(), "Some Generated Comment Text");
-        return c;
-    }
+    private CommentRepository commentRepo;
+    @Autowired
+    private AssignmentRepository assignmentRepo;
 
     public Comment save(CommentDto commentDto, User user) {
         Comment comment = new Comment();
+        Assignment assignment = assignmentRepo.getById(commentDto.getAssignmentId());
+
         comment.setId(commentDto.getId());
-        comment.setCreatedBy(user);
-        Assignment assignment = assignmentRepository.getByid(commentDto.getAssignmentId());
         comment.setAssignment(assignment);
-        if (commentDto.getId() == null)
+        comment.setText(commentDto.getText());
+        comment.setCreatedBy(user);
+        if (comment.getId() == null)
             comment.setCreatedDate(LocalDateTime.now());
 
-        comment.setCommentText(commentDto.getCommentText());
-        return commentRepository.save(comment);
-
-
+        return commentRepo.save(comment);
     }
 
     public Set<Comment> getCommentsByAssignmentId(Long assignmentId) {
-        Set<Comment> comments = commentRepository.findByAssignmentId(assignmentId);
+        Set<Comment> comments = commentRepo.findByAssignmentId(assignmentId);
+
         return comments;
     }
 

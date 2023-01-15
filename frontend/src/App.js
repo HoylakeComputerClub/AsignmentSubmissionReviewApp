@@ -3,15 +3,14 @@ import { useLocalState } from './utils/useLocalStorage';
 import { useState,  useEffect } from "react";
 import { Route, Routes } from 'react-router-dom';
 import jwt_decode from "jwt-decode";
-import parseJwt from './utils/jwtUtils';
-import Dashboards from './Dashboards';
+
 import HomePage from './HomePage';
 import Login from './Login';
 import PrivateRoute from './PrivateRoute';
-import AssignmentView from './AssignmentViews/AssignmentView';
-import AdminAssignmentView from './AssignmentViews/AdminAssignmentView';
-import CodeReviewerAssignmentView from './AssignmentViews/CodeReviewerAssignmentView';
-import LearnerAssignmentView from './AssignmentViews/LearnerAssignmentView';
+import AssignmentView from './AssignmentView';
+import CodeReviewerAssignmentView from './CodeReviewerAssignmentView';
+import CodeReviewerDashboard from './Dashboards/CodeReviewerDashboard';
+import Dashboard from './Dashboards/Dashboard';
 import { useUser } from "./UserProvider";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -35,18 +34,38 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <Routes>
-    
-        <Route path="/dashboard" element={<PrivateRoute><Dashboards jwt={jwt} setJwt={setJwt} /></PrivateRoute>}/>
-        <Route path='/assignments/:id' element={<PrivateRoute>{jwt ? parseJwt(jwt)["authorities"][0] === "ROLE_ADMIN" ? <AdminAssignmentView jwt={jwt} setJwt={setJwt} /> : parseJwt(jwt)["authorities"][0] === "ROLE_REVIEWER" ? <CodeReviewerAssignmentView jwt={jwt} setJwt={setJwt} /> : parseJwt(jwt)["authorities"][0] === "ROLE_LEARNER" ? <LearnerAssignmentView jwt={jwt} setJwt={setJwt} /> : <AssignmentView jwt={jwt} setJwt={setJwt} /> : <AssignmentView jwt={jwt} setJwt={setJwt} />}</PrivateRoute>} />
-        <Route path="/login" element={<Login jwt={jwt} setJwt={setJwt} />} />
-        <Route path="/" element={<HomePage jwt={jwt} setJwt={setJwt} />} />
-
-      </Routes>
-      </div>
-
-
+    <Routes>
+      <Route
+        path="/dashboard"
+        element={
+          roles.find((role) => role === "ROLE_REVIEWER") ? (
+            <PrivateRoute>
+              <CodeReviewerDashboard />
+            </PrivateRoute>
+          ) : (
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
+          )
+        }
+      />
+      <Route
+        path="/assignments/:assignmentId"
+        element={
+          roles.find((role) => role === "ROLE_REVIEWER") ? (
+            <PrivateRoute>
+              <CodeReviewerAssignmentView />
+            </PrivateRoute>
+          ) : (
+            <PrivateRoute>
+              <AssignmentView />
+            </PrivateRoute>
+          )
+        }
+      />
+      <Route path="login" element={<Login />} />
+      <Route path="/" element={<HomePage />} />
+    </Routes>
   );
 }
 

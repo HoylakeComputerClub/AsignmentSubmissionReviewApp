@@ -1,49 +1,24 @@
-.App {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  text-align: center;
-}
-
-.dash {
-  width: 90%;
-}
-
 .assignment-wrapper {
-  border: 1px dashed gray;
-  border-radius: 7px;
-  padding: 10px;
-  margin: 20px;
-  text-align: left;
-
+  border: 1px dashed lightgray;
+  padding: 2em;
+  border-radius: 1em;
+  margin-top: 2em;
 }
 
-.assignment-wrapper h2 {
-  margin-top: -25px;
-  margin-left: 10px;
-}
-
-.assignment-wrapper span {
-  background: white;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-.assignment-wrapper .card {
-  text-align: center;
+.assignment-wrapper-title {
+  width: min-content !important;
+  margin-top: -2em !important;
+  margin-bottom: 1em !important;
+  background-color: white !important;
+  white-space: nowrap !important;
 }
 
 .comment-bubble {
   background: #eeeeee;
-  opacity: 0.7;
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  flex-direction: column;  
+  border-radius: 1em;
+  padding: 1em;
+  margin: 1em 0em;
 }
-
 
 
 

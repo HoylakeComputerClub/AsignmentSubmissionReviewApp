@@ -4,14 +4,14 @@ public class CommentDto {
 
     private Long id;
     private Long assignmentId;
-    private String commentText;
+    private String text;
 
-    private String userJwt;
+    private String user;
 
-    public CommentDto(Long assignmentId, String commentText, String userJwt) {
+    public CommentDto(Long assignmentId, String text, String user) {
         this.assignmentId = assignmentId;
-        this.commentText = commentText;
-        this.userJwt = userJwt;
+        this.text = text;
+        this.user = user;
     }
 
     public Long getId() {
@@ -30,28 +30,28 @@ public class CommentDto {
         this.assignmentId = assignmentId;
     }
 
-    public String getCommentText() {
-        return commentText;
+    public String getText() {
+        return text;
     }
 
-    public void setCommentText(String commentText) {
-        this.commentText = commentText;
+    public void setText(String text) {
+        this.text = text;
     }
 
-    public String getUserJwt() {
-        return userJwt;
+    public String getUser() {
+        return user;
     }
 
-    public void setUserJwt(String userJwt) {
-        this.userJwt = userJwt;
+    public void setUser(String user) {
+        this.user = user;
     }
 
     @Override
     public String toString() {
         return "CommentDto{" +
                 "assignmentId=" + assignmentId +
-                ", commentText='" + commentText + '\'' +
-                ", userJwt='" + userJwt + '\'' +
+                ", commentText='" + text + '\'' +
+                ", userJwt='" + user + '\'' +
                 '}';
     }
 }

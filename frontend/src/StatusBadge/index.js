@@ -1,7 +1,7 @@
 import { Badge } from "react-bootstrap";
 
 const StatusBadge = (props) => {
-    const { badgeSize, text, type } = props;
+    const { text } = props;
     // className="mb-2 text-muted" ?? maybe??
 
     function getBadgeColour() {
@@ -19,19 +19,17 @@ const StatusBadge = (props) => {
             return "danger";
     }
 
-    function getBadgeType() {
-        if (type !== "dash")
-            return {lineHeight: '1.6rem', marginTop: '5px', marginLeft: '450px', paddingLeft: '20px', paddingRight: '20px', fontSize: '1rem', fontWeight: '300'};
-        else
-            return { paddingLeft: '20px', paddingRight: '20px', marginBottom: '5px' };
-    }
-
-    const badgeColour = getBadgeColour();
-
     return (
-
-        <Badge bg={badgeColour} style={getBadgeType()} pill size={badgeSize}>{text}</Badge>
-    )
+        <Badge
+          pill
+          bg={getBadgeColour()}
+          style={{
+            fontSize: "1em",
+          }}
+        >
+          {text}
+        </Badge>
+      );
 } 
 
 export default StatusBadge;

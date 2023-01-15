@@ -1,23 +1,22 @@
-
-function fetcher (url, requestMethod, jwt, requestBody) {
+function ajax(url, requestMethod, jwt, requestBody) {
     const fetchData = {
-        headers: {
-            "Content-Type": "application/json"
-        },
-        method: requestMethod
-    }
-
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: requestMethod,
+    };
+  
     if (jwt) {
-        fetchData.headers.Authorization = `Bearer ${jwt}`
+      fetchData.headers.Authorization = `Bearer ${jwt}`;
     }
-
+  
     if (requestBody) {
-        fetchData.body = JSON.stringify(requestBody)
+      fetchData.body = JSON.stringify(requestBody);
     }
-
-    return fetch(url, fetchData).then((res) => {
-        if (res.status === 200) return res.json()
+  
+    return fetch(url, fetchData).then((response) => {
+      if (response.status === 200) return response.json();
     });
-}
-
-export default fetcher;
+  }
+  
+  export default ajax;

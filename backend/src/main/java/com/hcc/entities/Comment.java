@@ -4,34 +4,21 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-
 @Entity
 @Table(name = "comments")
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private LocalDateTime createdDate;
+    @JsonIgnore
     @ManyToOne
     private Assignment assignment;
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User createdBy;
-
-    @Column(columnDefinition = "TEXT", length = 512)
-    private String commentText;
-
-    public Comment() {}
-
-
-    public Comment(LocalDateTime createdDate, Assignment assignment, User createdBy, String commentText) {
-        this.createdDate = createdDate;
-        this.assignment = assignment;
-        this.createdBy = createdBy;
-        this.commentText = commentText;
-    }
+    private LocalDateTime createdDate;
+    @Column(columnDefinition = "TEXT")
+    private String text;
 
     public Long getId() {
         return id;
@@ -57,12 +44,12 @@ public class Comment {
         this.createdBy = createdBy;
     }
 
-    public String getCommentText() {
-        return commentText;
+    public String getText() {
+        return text;
     }
 
-    public void setCommentText(String commentText) {
-        this.commentText = commentText;
+    public void setText(String text) {
+        this.text = text;
     }
 
     public Assignment getAssignment() {
@@ -71,16 +58,5 @@ public class Comment {
 
     public void setAssignment(Assignment assignment) {
         this.assignment = assignment;
-    }
-
-    @Override
-    public String toString() {
-        return "Comment{" +
-                "id=" + id +
-                ", createdDate=" + createdDate +
-                ", assignment=" + assignment +
-                ", createdBy=" + createdBy +
-                ", commentText='" + commentText + '\'' +
-                '}';
     }
 }
