@@ -1,6 +1,8 @@
 import './App.css';
 import { useLocalState } from './utils/useLocalStorage';
+import { useState,  useEffect } from "react";
 import { Route, Routes } from 'react-router-dom';
+import jwt_decode from "jwt-decode";
 import parseJwt from './utils/jwtUtils';
 import Dashboards from './Dashboards';
 import HomePage from './HomePage';
@@ -16,7 +18,21 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 function App() {
 
   const [jwt, setJwt] = useLocalState("", "jwt");
+  const [roles, setRoles] = useState([]);
   const user = useUser();
+
+  useEffect(() => {
+    setRoles(getRolesFromJWT());
+  }, [user.jwt]);
+
+  function getRolesFromJWT() {
+    if (user.jwt) {
+      const decodedJwt = jwt_decode(user.jwt);
+
+      return decodedJwt.authorities;
+    }
+    return [];
+  }
 
   return (
     <div className="App">
