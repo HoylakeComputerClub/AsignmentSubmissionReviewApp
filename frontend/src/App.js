@@ -10,11 +10,13 @@ import AssignmentView from './AssignmentViews/AssignmentView';
 import AdminAssignmentView from './AssignmentViews/AdminAssignmentView';
 import CodeReviewerAssignmentView from './AssignmentViews/CodeReviewerAssignmentView';
 import LearnerAssignmentView from './AssignmentViews/LearnerAssignmentView';
+import { useUser } from "./UserProvider";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
 
   const [jwt, setJwt] = useLocalState("", "jwt");
+  const user = useUser();
 
   return (
     <div className="App">

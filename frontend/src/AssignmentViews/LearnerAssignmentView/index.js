@@ -5,11 +5,13 @@ import fetcher from '../../Services/fetchService';
 import StatusBadge from '../../StatusBadge';
 import { useLocalState } from '../../utils/useLocalStorage';
 import Comment from '../../Comment';
+import { useUser } from '../../UserProvider';
 
 
 const AssignmentView = (props) => {
     const navigate = useNavigate();
     const [jwt, setJwt] = useLocalState("", "jwt");
+    const user = useUser();
     const [assignment, setAssignment] = useState({ "number": "0", "githubUrl": "", "branch": "", "status": null });
     const assignmentId = window.location.href.split("/assignments/")[1];
     const [selectedAssignment, setSelectedAssignment] = useState(null);
@@ -22,13 +24,12 @@ const AssignmentView = (props) => {
         id: null,
         commentText: "",
         assignmentId: assignmentId !== null ? parseInt(assignmentId) : null,
-        user: jwt
+        user: user.jwt
     });
 
     useEffect(() => {
         console.log(assignmentId);
-    fetcher(`/api/comments?assignmentId=${assignmentId}`, "get", jwt, null).then((commentData) => {
-            console.log(commentData);
+    fetcher(`/api/comments?assignmentId=${assignmentId}`, "get", user.jwt, null).then((commentData) => {
             setComments(commentData);
 
         });
@@ -36,7 +37,7 @@ const AssignmentView = (props) => {
 
     
     useEffect(() => {
-        fetcher(`/api/assignments/${assignmentId}`, "get", jwt).then(assignmentResponse => {
+        fetcher(`/api/assignments/${assignmentId}`, "get", user.jwt).then(assignmentResponse => {
             let assignmentData = assignmentResponse.assignment;
             if (assignmentData.branch === null) assignmentData.branch = "";
             if (assignmentData.githubUrl === null) assignmentData.githubUrl = "";
@@ -72,22 +73,20 @@ const AssignmentView = (props) => {
     }
 
     function persist() {
-        fetcher(`/api/assignments/${assignmentId}`, "put", jwt, assignment).then((assignmentData) => {setAssignment(assignmentData)});
+        fetcher(`/api/assignments/${assignmentId}`, "put", user.jwt, assignment).then((assignmentData) => {setAssignment(assignmentData)});
     }
 
     function submitComment () {
         if (comment.id) {
-            fetcher(`/api/comments/${comment.id}`, 'put', jwt, comment).then( data => {
+            fetcher(`/api/comments/${comment.id}`, 'put', user.jwt, comment).then( data => {
                 const commentsCopy = [...comments];
                 const idx = commentsCopy.findIndex((c) => c.id === data.id);
-                console.log("commentsubmit")
-                commentsCopy[idx] = data;
                 updateComments(commentsCopy);
                 updateComment("");
             }).catch((err) => console.log(err));
 
         } else {
-            fetcher('/api/comments', 'post', jwt, comment).then( data => {
+            fetcher('/api/comments', 'post', user.jwt, comment).then( data => {
                 const commentsCopy = [...comments];
                 commentsCopy.push(data);
                 setComments(data);
@@ -116,7 +115,7 @@ const AssignmentView = (props) => {
     }
 
     function handleUpdateComment (commentId) {
-        // UPDATE logic goes here
+      
         const idx = comments.findIndex(c => c.id === commentId);
         console.log(idx);
         console.log("handleupdate");
@@ -124,7 +123,7 @@ const AssignmentView = (props) => {
             id: commentId,
             commentText: comments[idx].commentText,
             assignmentId: assignmentId,
-            user: jwt,
+            user: user.jwt,
             createdBy: comments[idx].createdBy
         }
         setComment(commentCopy);
@@ -285,7 +284,7 @@ const AssignmentView = (props) => {
                 <div className='mt-5'>
                     <h4>Comments</h4>
                     {comments.map((comm) =>( 
-                        <Comment key={comm.id} c={comm} username={comm.createdBy.username} commentText={comm.commentText} id={comments.id}handleDeleteComment={handleDeleteComment} handleUpdateComment={handleUpdateComment}/>    
+                        <Comment key={comm.id} c={comm} username={comm.createdBy.username} commentText={comm.commentText} id={comm.id} emitDeleteComment={handleDeleteComment} emitUpdateComment={handleUpdateComment} />    
                     ))}
                 </div>
         </div>
