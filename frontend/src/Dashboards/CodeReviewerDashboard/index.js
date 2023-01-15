@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Badge, Button, Card } from 'react-bootstrap';
+import { Button, Card } from 'react-bootstrap';
 import fetcher from '../../Services/fetchService';
+import StatusBadge from '../../StatusBadge';
 import parseJwt from '../../utils/jwtUtils';
+import { useNavigate } from 'react-router-dom';
 
 
 const CodeReviewerDashboard = (props) => {
+    const navigate = useNavigate();
     const [assignments, setAssignments] = useState(null);
     useEffect(() => {
         fetcher("/api/assignments", "get", props.jwt).then(assignmentsData => {
@@ -14,7 +17,7 @@ const CodeReviewerDashboard = (props) => {
 
     function createAssignment () {
         fetcher("/api/assignments", "post", props.jwt).then(assignment => {
-            window.location.href = `/assignments/${assignment.id}`;
+            navigate `/assignments/${assignment.id}`;
         });
     }
 
@@ -44,11 +47,11 @@ const CodeReviewerDashboard = (props) => {
             method: "delete"
         }
         fetchData.headers.Authorization = `Bearer ${props.jwt}`
-        fetch(`/api/assignments/${id}`, fetchData).then(() => window.location.href = '/dashboard');
+        fetch(`/api/assignments/${id}`, fetchData).then(() => navigate('/dashboard'));
     }
 
     function editReview (assignment) {
-        window.location.href = `/assignments/${assignment.id}`
+        navigate(`/assignments/${assignment.id}`);
     }
     return (
         <div className='dash'>
@@ -62,7 +65,7 @@ const CodeReviewerDashboard = (props) => {
                         return( <Card style={{ margin: '5px'}} key={assignment.id}>
                                 <Card.Body style={{ display: 'flex', flexDirection: 'column', allignItems: 'center', justifyContent: 'space-between'}}>
                                     <Card.Title>{`Assignment #${assignment.number}`}</Card.Title>
-                                    <Card.Subtitle style={{marginTop: '5px', marginBottm: '5px'}} className="mb-2 text-muted"><Badge bg={assignment.status === "Completed" ? 'success' : assignment.status === "Pending Submission" ? 'danger': assignment.status === "Submitted" ? 'primary' :'secondary'} size='small'>{assignment.status}</Badge></Card.Subtitle>
+                                    <Card.Subtitle style={{marginTop: '5px', marginBottm: '5px'}} className="mb-2 text-muted"><StatusBadge  badgeSize="small" text={assignment.status} type="dash"></StatusBadge></Card.Subtitle>
                                     <Card.Subtitle>Github</Card.Subtitle>
                                     <Card.Text>
                                         {assignment.githubUrl}
@@ -81,11 +84,16 @@ const CodeReviewerDashboard = (props) => {
             <div className='assignment-wrapper submitted'>
                 <h2><span>Awaiting Review</span></h2>
             <div className='d-grid gap-5' style={{gridTemplateColumns: 'repeat(auto-fill, 340px)', marginTop: '15px'}}>
-                    { assignments && assignments.filter(assignment => assignment.status === "Submitted").length > 0 ? assignments.filter(assignment => assignment.status === "Submitted").map((assignment) => {
+                    { assignments && assignments.filter(assignment => assignment.status === "Submitted").length > 0 ? assignments.filter(assignment => assignment.status === "Submitted" || assignment.status === "Resubmitted").sort((a, b) => {
+                        if (a.status === "Resubmitted")
+                            return -1;
+                        else
+                            return 1;
+                    }).map((assignment) => {
                         return( <Card style={{ margin: '5px'}} key={assignment.id}>
                                 <Card.Body style={{ display: 'flex', flexDirection: 'column', allignItems: 'center', justifyContent: 'space-between'}}>
                                     <Card.Title>{`Assignment #${assignment.number}`}</Card.Title>
-                                    <Card.Subtitle style={{marginTop: '5px', marginBottm: '5px'}} className="mb-2 text-muted"><Badge bg="primary" size='small'>{assignment.status}</Badge></Card.Subtitle>
+                                    <Card.Subtitle style={{marginTop: '5px', marginBottm: '5px'}} className="mb-2 text-muted"><StatusBadge  badgeSize="small" text={assignment.status} type="dash"></StatusBadge></Card.Subtitle>
                                     <Card.Subtitle>Github</Card.Subtitle>
                                     <Card.Text>
                                         {assignment.githubUrl}
@@ -108,7 +116,8 @@ const CodeReviewerDashboard = (props) => {
                         return( <Card style={{ margin: '5px'}} key={assignment.id}>
                                 <Card.Body style={{ display: 'flex', flexDirection: 'column', allignItems: 'center', justifyContent: 'space-between'}}>
                                     <Card.Title>{`Assignment #${assignment.number}`}</Card.Title>
-                                    <Card.Subtitle style={{marginTop: '5px', marginBottm: '5px'}} className="mb-2 text-muted"><Badge bg="danger" size='small'>{assignment.status}</Badge></Card.Subtitle>
+                                    {/* <Card.Subtitle style={{marginTop: '5px', marginBottm: '5px'}} className="mb-2 text-muted"><Badge bg="danger" size='small'>{assignment.status}</Badge></Card.Subtitle> */}
+                                    <Card.Subtitle style={{marginTop: '5px', marginBottm: '5px'}} className="mb-2 text-muted"><StatusBadge  badgeSize="small" text={assignment.status} type="dash"></StatusBadge></Card.Subtitle>
                                     <Card.Subtitle>Github</Card.Subtitle>
                                     <Card.Text>
                                         {assignment.githubUrl}
@@ -117,7 +126,7 @@ const CodeReviewerDashboard = (props) => {
                                     <Card.Text>
                                         {assignment.branch}
                                     </Card.Text>
-                                    <Button style={{margin: '5px', width: "100%"}} onClick={() => window.location.href = `/assignments/${assignment.id}`}>View</Button>
+                                    <Button style={{margin: '5px', width: "100%"}} onClick={() => navigate(`/assignments/${assignment.id}`)}>View</Button>
                                     {/* <Button style={{margin: '5px', width: "100%"}} variant='danger' onClick={() => deleteAssignment(assignment.id)}>Delete</Button> */}
                                 </Card.Body>
                             </Card>);
@@ -127,7 +136,7 @@ const CodeReviewerDashboard = (props) => {
                 
                 <span id='submit' type='button' onClick={() => {
                     props.setJwt(null);
-                    window.location.href = '/'
+                    navigate('/');
                     }} >
                     Logout
                 </span>

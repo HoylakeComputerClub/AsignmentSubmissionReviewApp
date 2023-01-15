@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Badge, Button, Card } from 'react-bootstrap';
 import fetcher from '../../Services/fetchService';
 import parseJwt from '../../utils/jwtUtils';
+import { useNavigate } from 'react-router-dom';
 
 
 const Dashboard = (props) => {
+    const navigate = useNavigate();
     const [assignments, setAssignments] = useState(null);
     useEffect(() => {
         fetcher("/api/assignments", "get", props.jwt).then(assignmentsData => {
@@ -14,7 +16,7 @@ const Dashboard = (props) => {
 
     function createAssignment () {
         fetcher("/api/assignments", "post", props.jwt).then(assignment => {
-            window.location.href = `/assignments/${assignment.id}`;
+            navigate(`/assignments/${assignment.id}`);
         });
     }
 
@@ -26,7 +28,7 @@ const Dashboard = (props) => {
             method: "delete"
         }
         fetchData.headers.Authorization = `Bearer ${props.jwt}`
-        fetch(`/api/assignments/${id}`, fetchData).then(() => window.location.href = '/dashboard');
+        fetch(`/api/assignments/${id}`, fetchData).then(() => navigate('/dashboard'));
     }
     return (
         <div className='dash'>
@@ -48,7 +50,7 @@ const Dashboard = (props) => {
                                     <Card.Text>
                                         {assignment.branch}
                                     </Card.Text>
-                                    <Button style={{margin: '5px', width: "100%"}} onClick={() => window.location.href = `/assignments/${assignment.id}`}>Edit</Button>
+                                    <Button style={{margin: '5px', width: "100%"}} onClick={() => navigate(`/assignments/${assignment.id}`)}>Edit</Button>
                                     <Button style={{margin: '5px', width: "100%"}} variant='danger' onClick={() => deleteAssignment(assignment.id)}>Delete</Button>
                                 </Card.Body>
                             </Card>);
@@ -56,7 +58,7 @@ const Dashboard = (props) => {
                 </div>
                 <span id='submit' type='button' onClick={() => {
                     props.setJwt(null);
-                    window.location.href = '/'
+                    navigate('/')
                     }} >
                     Logout
                 </span>

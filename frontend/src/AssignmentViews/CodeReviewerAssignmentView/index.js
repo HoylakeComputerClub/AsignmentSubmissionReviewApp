@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Badge, Button, Col, Dropdown, DropdownButton, Form, Row } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import fetcher from '../../Services/fetchService';
+import StatusBadge from '../../StatusBadge';
 import { useLocalState } from '../../utils/useLocalStorage';
 
 
 const AssignmentView = (props) => {
+    const navigate = useNavigate();
     const [jwt, setJwt] = useLocalState("", "jwt");
     const [assignment, setAssignment] = useState({ "number": "0", "githubUrl": "", "branch": "", "status": null });
     const assignmentId = window.location.href.split("/assignments/")[1];
@@ -60,7 +62,7 @@ const AssignmentView = (props) => {
                 <h1>Code Reviewer Assignment View</h1>
             </Col>
             <Col>
-                <Badge style={{lineHeight: '1.6rem', marginTop: '5px', marginLeft: '450px', paddingLeft: '20px', paddingRight: '20px', fontSize: '1rem', fontWeight: '300'}}pill bg='success'>{assignment.status}</Badge>
+                <StatusBadge text={assignment.status}></StatusBadge>
             </Col>
 
         </Row>
@@ -89,7 +91,7 @@ const AssignmentView = (props) => {
                     <Col md='10' className='mt-2'>
                         {/* <Button variant='success' onClick={() => {saveAssignment(assignmentStatuses[4].status)}} className='m-3'>Complete Review</Button> */}
                         <Button variant='danger' onClick={() => {saveAssignment(assignmentStatuses[2].status)}} className='m-3'>Re-Claim</Button>
-                        <Button variant='secondary' onClick={() => window.location.href = '/dashboard'} className='m-3'>Back to Dashboard</Button>
+                        <Button variant='secondary' onClick={() => navigate('/dashboard')} className='m-3'>Back to Dashboard</Button>
                     </Col>
                     </> : <>
                     <Col md='10' className='mt-2'>
@@ -99,7 +101,7 @@ const AssignmentView = (props) => {
                     <Col md='10' className='mt-2'>
                         <Button variant='success' onClick={() => {saveAssignment(assignmentStatuses[4].status)}} className='m-3'>Complete Review</Button>
                         <Button variant='danger' onClick={() => {saveAssignment(assignmentStatuses[3].status)}} className='m-3'>Reject Assignment</Button>
-                        <Button variant='secondary' onClick={() => window.location.href = '/dashboard'} className='m-3'>Back to Dashboard</Button>
+                        <Button variant='secondary' onClick={() => navigate('/dashboard')} className='m-3'>Back to Dashboard</Button>
                     </Col>
                     </>}
                 </Form.Group>
