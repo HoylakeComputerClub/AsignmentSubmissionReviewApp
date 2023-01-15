@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Navigate } from "react-router-dom";
 import fetcher from "../Services/fetchService";
+import { useUser } from "../UserProvider";
 import { useLocalState } from "../utils/useLocalStorage";
 
 const PrivateRoute = ({ children }) => {
