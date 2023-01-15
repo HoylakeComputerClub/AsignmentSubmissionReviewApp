@@ -4,6 +4,7 @@ import { BrowserRouter, Router, useNavigate } from 'react-router-dom';
 import fetcher from '../../Services/fetchService';
 import StatusBadge from '../../StatusBadge';
 import { useLocalState } from '../../utils/useLocalStorage';
+import Comment from '../../Comment';
 
 
 const AssignmentView = (props) => {
@@ -142,7 +143,7 @@ const AssignmentView = (props) => {
                     <Button type = 'submit' onClick={() => {submitComment()}} style={{width: '100%'}}>Post Comment</Button>
                 </div>
                 <div className='mt-5'>
-                    {comments.map((comm) => <div className='mt-3'><Badge><span style={{fontWeight: 'bold'}}>{comm.createdBy.username} says... </span></Badge> {comm.commentText}</div>)}
+                    {comments.map((comm) => <Comment key={comm.id} c={comm} /> )}
                 </div>
         </div>
     );

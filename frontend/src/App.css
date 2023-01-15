@@ -35,3 +35,15 @@
   text-align: center;
 }
 
+.comment-bubble {
+  background: #eeeeee;
+  opacity: 0.7;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;  
+}
+
+
+
+

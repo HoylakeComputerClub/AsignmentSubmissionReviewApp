@@ -30,10 +30,13 @@ public class CommentService {
 
     public Comment save(CommentDto commentDto, User user) {
         Comment comment = new Comment();
+        comment.setId(commentDto.getId());
         comment.setCreatedBy(user);
         Assignment assignment = assignmentRepository.getByid(commentDto.getAssignmentId());
         comment.setAssignment(assignment);
-        comment.setCreatedDate(LocalDateTime.now());
+        if (commentDto.getId() == null)
+            comment.setCreatedDate(LocalDateTime.now());
+
         comment.setCommentText(commentDto.getCommentText());
         return commentRepository.save(comment);
 
@@ -42,7 +45,6 @@ public class CommentService {
 
     public Set<Comment> getCommentsByAssignmentId(Long assignmentId) {
         Set<Comment> comments = commentRepository.findByAssignmentId(assignmentId);
-
         return comments;
     }
 

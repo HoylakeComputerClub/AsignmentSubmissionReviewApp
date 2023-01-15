@@ -1,6 +1,8 @@
 package com.hcc.dto;
 
 public class CommentDto {
+
+    private Long id;
     private Long assignmentId;
     private String commentText;
 
@@ -10,6 +12,14 @@ public class CommentDto {
         this.assignmentId = assignmentId;
         this.commentText = commentText;
         this.userJwt = userJwt;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getAssignmentId() {

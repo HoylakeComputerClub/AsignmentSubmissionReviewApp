@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Badge, Button, Col, Dropdown, DropdownButton, Form, Row } from 'react-bootstrap';
+import { Button, Col, Dropdown, DropdownButton, Form, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import fetcher from '../../Services/fetchService';
 import StatusBadge from '../../StatusBadge';
 import { useLocalState } from '../../utils/useLocalStorage';
+import Comment from '../../Comment';
 
 
 const AssignmentView = (props) => {
@@ -18,7 +19,7 @@ const AssignmentView = (props) => {
     
     const [assignmentEnums, setAssignmentEnums] = useState([]);
     const [comment, setComment] = useState({
-        id: 1,
+        id: null,
         commentText: "",
         assignmentId: assignmentId !== null ? parseInt(assignmentId) : null,
         user: jwt
@@ -75,9 +76,25 @@ const AssignmentView = (props) => {
     }
 
     function submitComment () {
-        fetcher('/api/comments', 'post', jwt, comment).then( data => {
-            updateComments(data);
-        }).then();
+        if (comment.id) {
+            fetcher(`/api/comments/${comment.id}`, 'put', jwt, comment).then( data => {
+                const commentsCopy = [...comments];
+                const idx = commentsCopy.findIndex((c) => c.id === data.id);
+                console.log("commentsubmit")
+                commentsCopy[idx] = data;
+                updateComments(commentsCopy);
+                updateComment("");
+            }).catch((err) => console.log(err));
+
+        } else {
+            fetcher('/api/comments', 'post', jwt, comment).then( data => {
+                const commentsCopy = [...comments];
+                commentsCopy.push(data);
+                setComments(data);
+                updateComment("");
+            }).catch(err => console.log(err));
+
+        }
     }
 
     function updateComment(value) {
@@ -91,6 +108,26 @@ const AssignmentView = (props) => {
     function updateComments(value) {
         const commentsCopy = [...comments, value];
         setComments(commentsCopy);
+    }
+
+    function handleDeleteComment (commentId) {
+        // DELETE logic goes here
+
+    }
+
+    function handleUpdateComment (commentId) {
+        // UPDATE logic goes here
+        const idx = comments.findIndex(c => c.id === commentId);
+        console.log(idx);
+        console.log("handleupdate");
+        const commentCopy = {
+            id: commentId,
+            commentText: comments[idx].commentText,
+            assignmentId: assignmentId,
+            user: jwt,
+            createdBy: comments[idx].createdBy
+        }
+        setComment(commentCopy);
     }
     
     return (
@@ -242,12 +279,14 @@ const AssignmentView = (props) => {
                 </Form.Group>
                 </> ) : (<></>)}
                 <div className="mt-5">
-                    <textarea onChange={(e) => {updateComment(e.target.value)}} style={{width: '100%', borderRadius: '7px' }}></textarea>
+                    <textarea value={comment.commentText} onChange={(e) => {updateComment(e.target.value)}} style={{width: '100%', borderRadius: '7px' }}></textarea>
                     <Button onClick={() => {submitComment()}} style={{width: '100%'}}>Post Comment</Button>
                 </div>
                 <div className='mt-5'>
                     <h4>Comments</h4>
-                    {comments.map((comm) => <div className='mt-3' style={{padding: '20px', margin: '10px', border: '1px dotted gray', borderRadius: '7px'}}><Badge><span style={{fontWeight: 'bold'}}>{`${comm.createdBy.username}`} says... </span></Badge> {comm.commentText}</div>)}
+                    {comments.map((comm) =>( 
+                        <Comment key={comm.id} c={comm} username={comm.createdBy.username} commentText={comm.commentText} id={comments.id}handleDeleteComment={handleDeleteComment} handleUpdateComment={handleUpdateComment}/>    
+                    ))}
                 </div>
         </div>
     );
