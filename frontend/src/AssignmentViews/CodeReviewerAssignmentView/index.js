@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Badge, Button, Col, Dropdown, DropdownButton, Form, Row } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { BrowserRouter, Router, useNavigate } from 'react-router-dom';
 import fetcher from '../../Services/fetchService';
 import StatusBadge from '../../StatusBadge';
 import { useLocalState } from '../../utils/useLocalStorage';
@@ -13,9 +13,40 @@ const AssignmentView = (props) => {
     const assignmentId = window.location.href.split("/assignments/")[1];
     const [selectedAssignment, setSelectedAssignment] = useState(null);
     const [assignmentStatuses, setAssignmentStatuses] = useState([]);
+    const [comments, setComments] = useState([]);
     const previousAssignmentValue = useRef(assignment);
 
     const [assignmentEnums, setAssignmentEnums] = useState([]);
+    const [comment, setComment] = useState({
+        id: 1,
+        commentText: "",
+        assignmentId: assignmentId !== null ? parseInt(assignmentId) : null,
+        user: jwt
+    });
+    useEffect(() => {
+        console.log(assignmentId);
+    fetcher(`/api/comments?assignmentId=${assignmentId}`, "get", jwt, null).then((commentData) => {
+            setComments(commentData);
+        });
+    }, [])
+
+    function submitComment () {
+        console.log(comment);
+        fetcher('/api/comments', 'post', jwt, comment).then( data => {
+            updateComments(data);
+        }).then();
+    }
+
+    function updateComment(value) {
+        const commentCopy = {...comment};
+        commentCopy.commentText = value;
+        setComment(commentCopy);
+    }
+
+    function updateComments(value) {
+        const commentsCopy = [...comments, value];
+        setComments(commentsCopy);
+    }
     
     useEffect(() => {
         fetcher(`/api/assignments/${assignmentId}`, "get", jwt).then(assignmentResponse => {
@@ -106,6 +137,13 @@ const AssignmentView = (props) => {
                     </>}
                 </Form.Group>
                 </> ) : (<></>)}
+                <div className="mt-5">
+                    <textarea onChange={(e) => {updateComment(e.target.value)}} style={{width: '100%', borderRadius: '7px' }}></textarea>
+                    <Button type = 'submit' onClick={() => {submitComment()}} style={{width: '100%'}}>Post Comment</Button>
+                </div>
+                <div className='mt-5'>
+                    {comments.map((comm) => <div className='mt-3'><Badge><span style={{fontWeight: 'bold'}}>{comm.createdBy.username} says... </span></Badge> {comm.commentText}</div>)}
+                </div>
         </div>
     );
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Button, Col, Dropdown, DropdownButton, Form, Row } from 'react-bootstrap';
+import { Badge, Button, Col, Dropdown, DropdownButton, Form, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import fetcher from '../../Services/fetchService';
 import StatusBadge from '../../StatusBadge';
@@ -13,6 +13,7 @@ const AssignmentView = (props) => {
     const assignmentId = window.location.href.split("/assignments/")[1];
     const [selectedAssignment, setSelectedAssignment] = useState(null);
     const [assignmentStatuses, setAssignmentStatuses] = useState([]);
+    const [comments, setComments] = useState([]);
     const previousAssignmentValue = useRef(assignment);
     
     const [assignmentEnums, setAssignmentEnums] = useState([]);
@@ -22,6 +23,15 @@ const AssignmentView = (props) => {
         assignmentId: assignmentId !== null ? parseInt(assignmentId) : null,
         user: jwt
     });
+
+    useEffect(() => {
+        console.log(assignmentId);
+    fetcher(`/api/comments?assignmentId=${assignmentId}`, "get", jwt, null).then((commentData) => {
+            console.log(commentData);
+            setComments(commentData);
+
+        });
+    }, [])
 
     
     useEffect(() => {
@@ -65,10 +75,9 @@ const AssignmentView = (props) => {
     }
 
     function submitComment () {
-        console.log(comment);
         fetcher('/api/comments', 'post', jwt, comment).then( data => {
-            console.log(data);
-        })
+            updateComments(data);
+        }).then();
     }
 
     function updateComment(value) {
@@ -76,6 +85,14 @@ const AssignmentView = (props) => {
         commentCopy.commentText = value;
         setComment(commentCopy);
     }
+
+
+
+    function updateComments(value) {
+        const commentsCopy = [...comments, value];
+        setComments(commentsCopy);
+    }
+    
     return (
         <div><Row className='my-5'>
             <Col>
@@ -227,6 +244,10 @@ const AssignmentView = (props) => {
                 <div className="mt-5">
                     <textarea onChange={(e) => {updateComment(e.target.value)}} style={{width: '100%', borderRadius: '7px' }}></textarea>
                     <Button onClick={() => {submitComment()}} style={{width: '100%'}}>Post Comment</Button>
+                </div>
+                <div className='mt-5'>
+                    <h4>Comments</h4>
+                    {comments.map((comm) => <div className='mt-3' style={{padding: '20px', margin: '10px', border: '1px dotted gray', borderRadius: '7px'}}><Badge><span style={{fontWeight: 'bold'}}>{`${comm.createdBy.username}`} says... </span></Badge> {comm.commentText}</div>)}
                 </div>
         </div>
     );

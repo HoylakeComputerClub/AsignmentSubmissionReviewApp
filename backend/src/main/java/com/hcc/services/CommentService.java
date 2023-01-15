@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class CommentService {
@@ -37,4 +39,12 @@ public class CommentService {
 
 
     }
+
+    public Set<Comment> getCommentsByAssignmentId(Long assignmentId) {
+        Set<Comment> comments = commentRepository.findByAssignmentId(assignmentId);
+
+        return comments;
+    }
+
+
 }

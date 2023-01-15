@@ -10,6 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Set;
+
 @RestController
 @RequestMapping("/api/comments")
 public class CommentController {
@@ -25,7 +28,12 @@ public class CommentController {
         System.out.println(commentDto);
         Comment comment = commentService.save(commentDto, user);
 
-
         return ResponseEntity.ok(comment);
+    }
+
+    @GetMapping
+    public ResponseEntity<Set<?>> getCommentsByAssignment(@RequestParam Long assignmentId) {
+        Set<Comment> comments = commentService.getCommentsByAssignmentId(assignmentId);
+        return ResponseEntity.ok(comments);
     }
 }

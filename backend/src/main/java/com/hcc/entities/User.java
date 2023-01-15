@@ -6,8 +6,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -27,6 +25,9 @@ public class User implements UserDetails {
     @Column(name = "password")
     @JsonIgnore
     private String password;
+
+    private String firstName;
+    private String lastName;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     @JsonIgnore
