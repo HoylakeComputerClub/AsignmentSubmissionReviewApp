@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Badge, Button, Col, Dropdown, DropdownButton, Form, Row } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import fetcher from '../../Services/fetchService';
 import { useLocalState } from '../../utils/useLocalStorage';
 
 
 const AssignmentView = (props) => {
+    const navigate = useNavigate();
     const [jwt, setJwt] = useLocalState("", "jwt");
     const [assignment, setAssignment] = useState({ "number": "0", "githubUrl": "", "branch": "", "status": null });
     const assignmentId = window.location.href.split("/assignments/")[1];
@@ -96,7 +97,7 @@ const AssignmentView = (props) => {
                     </Col>
                     <Col md='10'>
                     <Button variant='success' onClick={() => {saveAssignment()}} className='m-3'>Submit Assignment</Button>
-                    <Button variant='secondary' onClick={() => window.location.href = '/dashboard'} className='m-3'>Back to Dashboard</Button>
+                    <Button variant='secondary' onClick={() => navigate('/dashboard')} className='m-3'>Back to Dashboard</Button>
                     </Col>
                 </Form.Group>
                 </> ) : (<></>)}
