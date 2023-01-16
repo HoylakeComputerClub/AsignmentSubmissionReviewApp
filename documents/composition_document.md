@@ -1,16 +1,32 @@
 # Design Document for the Assignment Review App
 
+
 ## Synopsis
+Bloom Coders, a small code camp has been struggling to keep track of their learners assignments, over time this has become a logistical nightmare. The managers have requested the engineering teams come up with some solutions and one part of the problem is that they do not have a good way for a learner to submit assignments and get them reviewed. If only there were an app or program that could facilitate this for the learners that need to submit assignments and some professionals who could review those assignments...
+
+Enter **The Bloom Coder Assignment App** a solution to all their needs, *or at least their immidiate assignment review triage needs*. in this app we will need a few things to get it to do what we want. we have interviewed some learners and some reviewers and here are their Stories.
 
 ## User Stories
+
 ### Learner User Stories
+#### Bob the learner
+Meet Bob he is an ex rigger from the north sea and he wanted to persue a career in software engineering, he has aspirations of becomming a full stack web developer and later entering the realms of backend development as he progresses in his career. He came to `Bloom Code Camp` to get a step up on the cometition. Bob has some requests of the team.
+
 - As a Learner i want to be able to log in to the app and be presented with a dashboard
 - As a learner I want a dashboard that shows all of my currently working on, submitted, rejected, and completed assignments.
+
+#### Jen the learner
+Meet Jen she works 3 jobs to support her family and wants to gain a better work home life ballance, for her this means becoming a Data Engineer. For this she will need to learn backend development / Database Design and a some Data Science. She has enrolled at `Bloom Code Camp` with aspirations of becoming the best data engineer that she can be. Jen has some requests of the team.
+
 - As a Learner I want to be able to click on a `Create Assignment` button on my dashboard and be presented with a form to allow me to submit an assignment with room for my github url and the branch i am working on.
 - As a Learner I wantt to be able to click on an `Edit` button on one of the assignments on my dashboard to edit and resubmit it if it was returned unfinished.
 - As a Learner I want to be able to click on a `View` button on a completed assignment on my dashboard and be able to view a review video for the given assignment.
 
 ### Reviewer User Stories
+
+#### Carlos the Developer
+Meet Carlos he works as a backend developer at a fortune 500 company and in his spare time he codes analytical engines to automate the winning of online strategy games, he aspires to help new engineers and developers evolve and grow in their abilities and has signed up to the `Bloom Code Camp` as a reviewer to help the learners progress in their career with strong reviews and guidence from professionals such as himself. Carlos has quite a few requests of the team.
+
 - As a Reviewer I want to be able to login to the app and be presented with a dashboard.
 - As a Reviewer I want to be able to see any submitted assignments on my dashboard ready to claim.
 - As a Reviewer I want to be able to click on a `claim` button on an assignment in my dashboard to claim it ready for review
