@@ -111,22 +111,22 @@ Meet Carlos he works as a backend developer at a fortune 500 company and in his 
 ## Wireframes
 
 ### Home Page (Public)
-![Home Page (Public)](./images/home_page_public.png)
+![Home Page (Public)](./images/home_page_public.jpg)
 
 ### Home Page (Authenticated)
-![Home Page (Authenticated)](./images/home_page_authenticated.png)
+![Home Page (Authenticated)](./images/home_page_authenticated.jpg)
 
 ### Login Page
-![Login Page](./images/login_page.png)
+![Login Page](./images/login_page.jpg)
 
 ### Learner Dashboard
-![Learner Dashboard](./images/learner_dashboard.png)
+![Learner Dashboard](./images/learner_dashboard.jpg)
 
 ### Reviewer Dashboard
-![Reviewer Dashboard](./images/reviewer_dashboard.png)
+![Reviewer Dashboard](./images/reviewer_dashboard.jpg)
 
 ### Learner Assignment View
-![Learner Assignment View](./images/learner_assignment_view.png)
+![Learner Assignment View](./images/learner_assignment_view.jpg)
 
 ### Reviewer Assignment View
-![Reviewer Assignment View](./images/reviewer_assignment_view.png)
+![Reviewer Assignment View](./images/reviewer_assignment_view.jpg)
